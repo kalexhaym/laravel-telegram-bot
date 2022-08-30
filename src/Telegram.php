@@ -2,6 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class Telegram extends Curl
@@ -81,6 +82,16 @@ class Telegram extends Curl
     }
 
     /**
+     * @param Request $request
+     */
+    public function hook(Request $request)
+    {
+        $update = json_decode($request->getContent(), true);
+
+        $this->processUpdate($update);
+    }
+
+    /**
      * @return array
      */
     public function getUpdates(): array
@@ -115,33 +126,43 @@ class Telegram extends Curl
             $result = $this->getUpdates();
 
             foreach ($result['data']['result'] as $update) {
-                if (!empty($update['callback_query'])) {
-                    $callback_query = $update['callback_query'];
-                    $message = $callback_query['message'];
-                    $callback = $callback_query['data'];
-
-                    if (key_exists($callback, $this->callbacks_list)) {
-                        $class = new $this->callbacks_list[$callback]();
-                        $class->execute($message, $this);
-                        $this->answerCallbackQuery($callback_query['id']);
-                    }
-                }
-
-                if (!empty($update['message'])) {
-                    $message = $update['message'];
-
-                    if ($this->hasCommands($message)) {
-                        foreach ($this->getCommands($message) as $command) {
-                            if (key_exists($command, $this->commands_list)) {
-                                $class = new $this->commands_list[$command]();
-                                $class->execute($message, $this);
-                            }
-                        }
-                    }
-                }
+                $this->processUpdate($update);
             }
 
             sleep(config('telegram.poll.sleep', 2));
+        }
+    }
+
+    /**
+     * @param array $update
+     *
+     * @return void
+     */
+    private function processUpdate(array $update): void
+    {
+        if (!empty($update['callback_query'])) {
+            $callback_query = $update['callback_query'];
+            $message = $callback_query['message'];
+            $callback = $callback_query['data'];
+
+            if (key_exists($callback, $this->callbacks_list)) {
+                $class = new $this->callbacks_list[$callback]();
+                $class->execute($message, $this);
+                $this->answerCallbackQuery($callback_query['id']);
+            }
+        }
+
+        if (!empty($update['message'])) {
+            $message = $update['message'];
+
+            if ($this->hasCommands($message)) {
+                foreach ($this->getCommands($message) as $command) {
+                    if (key_exists($command, $this->commands_list)) {
+                        $class = new $this->commands_list[$command]();
+                        $class->execute($message, $this);
+                    }
+                }
+            }
         }
     }
 
