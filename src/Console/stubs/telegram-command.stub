@@ -1,0 +1,19 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kalexhaym\LaravelTelegramBot\Command;
+use Kalexhaym\LaravelTelegramBot\Telegram;
+
+class {{ class }} extends Command
+{
+    /**
+     * @var string
+     */
+    public $command = '/start';
+
+    public function execute(array $message, Telegram $telegram)
+    {
+        $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!');
+    }
+}
