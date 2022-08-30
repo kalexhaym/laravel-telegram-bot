@@ -54,11 +54,11 @@ return [
     */
 
     'commands' => [
-//        \App\Telegram\TestCommand::class,
+        \App\Telegram\TestCommand::class,
     ],
 
     'callbacks' => [
-//        \App\Telegram\TestCallback::class,
+        \App\Telegram\TestCallback::class,
     ],
 
 ];
