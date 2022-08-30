@@ -3,6 +3,7 @@
 namespace {{ namespace }};
 
 use Kalexhaym\LaravelTelegramBot\Command;
+use Kalexhaym\LaravelTelegramBot\Keyboard;
 use Kalexhaym\LaravelTelegramBot\Telegram;
 
 class {{ class }} extends Command
@@ -12,8 +13,19 @@ class {{ class }} extends Command
      */
     public $command = '/start';
 
-    public function execute(array $message, Telegram $telegram)
+    /**
+     * @param array $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
+    public function execute(array $message, Telegram $telegram): void
     {
-        $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!');
+        $keyboard = (new Keyboard())
+            ->inline()
+            ->resizable()
+            ->addButton('Test Callback', 'callback');
+
+        $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!', $keyboard->get());
     }
 }

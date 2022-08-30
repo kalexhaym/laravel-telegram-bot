@@ -19,6 +19,11 @@ class Telegram extends Curl
     private $commands_list;
 
     /**
+     * @var array
+     */
+    private $callbacks_list;
+
+    /**
      * Telegram constructor.
      */
     public function __construct()
@@ -26,8 +31,12 @@ class Telegram extends Curl
         $this->url = 'https://api.telegram.org/bot' . config('telegram.bot.token');
 
         $this->commands_list = $this->loadCommands();
+        $this->callbacks_list = $this->loadCallbacks();
     }
 
+    /**
+     * @return array
+     */
     private function loadCommands(): array
     {
         $classes = config('telegram.commands');
@@ -37,6 +46,23 @@ class Telegram extends Curl
         foreach ($classes as $class_name) {
             $class = new $class_name();
             $commands_list[$class->command] = $class_name;
+        }
+
+        return $commands_list;
+    }
+
+    /**
+     * @return array
+     */
+    private function loadCallbacks(): array
+    {
+        $classes = config('telegram.callbacks');
+
+        $commands_list = [];
+
+        foreach ($classes as $class_name) {
+            $class = new $class_name();
+            $commands_list[$class->callback] = $class_name;
         }
 
         return $commands_list;
@@ -89,17 +115,27 @@ class Telegram extends Curl
             $result = $this->getUpdates();
 
             foreach ($result['data']['result'] as $update) {
-                if (empty($update['message'])) {
-                    continue;
+                if (!empty($update['callback_query'])) {
+                    $callback_query = $update['callback_query'];
+                    $message = $callback_query['message'];
+                    $callback = $callback_query['data'];
+
+                    if (key_exists($callback, $this->callbacks_list)) {
+                        $class = new $this->callbacks_list[$callback]();
+                        $class->execute($message, $this);
+                        $this->answerCallbackQuery($callback_query['id']);
+                    }
                 }
 
-                $message = $update['message'];
+                if (!empty($update['message'])) {
+                    $message = $update['message'];
 
-                if ($this->hasCommands($message)) {
-                    foreach ($this->getCommands($message) as $command) {
-                        if (key_exists($command, $this->commands_list)) {
-                            $class = new $this->commands_list[$command]();
-                            $class->execute($message, $this);
+                    if ($this->hasCommands($message)) {
+                        foreach ($this->getCommands($message) as $command) {
+                            if (key_exists($command, $this->commands_list)) {
+                                $class = new $this->commands_list[$command]();
+                                $class->execute($message, $this);
+                            }
                         }
                     }
                 }
@@ -139,6 +175,22 @@ class Telegram extends Curl
         }
 
         return $commands;
+    }
+
+    /**
+     * @param int $callback_query_id
+     *
+     * @return array
+     */
+    public function answerCallbackQuery(int $callback_query_id): array
+    {
+        $method = '/answerCallbackQuery';
+
+        $data = [
+            'callback_query_id' => $callback_query_id,
+        ];
+
+        return $this->post($this->url . $method, $data);
     }
 
     /**

@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kalexhaym\LaravelTelegramBot\Callback;
+use Kalexhaym\LaravelTelegramBot\Telegram;
+
+class {{ class }} extends Callback
+{
+    /**
+     * @var string
+     */
+    public $callback = 'callback';
+
+    /**
+     * @param array $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
+    public function execute(array $message, Telegram $telegram): void
+    {
+        $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!');
+    }
+}

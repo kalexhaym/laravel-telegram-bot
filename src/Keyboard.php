@@ -41,16 +41,21 @@ class Keyboard
 
     /**
      * @param $name
-     * @param $callback
+     * @param null $callback
+     * @param bool $is_url
      *
      * @return $this
      */
-    public function addButton($name, $callback = null): Keyboard
+    public function addButton($name, $callback = null, bool $is_url = false): Keyboard
     {
         $button = ['text' => $name];
 
         if (!empty($callback)) {
-            $button['callback_data'] = $callback;
+            if ($is_url) {
+                $button['url'] = $callback;
+            } else {
+                $button['callback_data'] = $callback;
+            }
         }
 
         $this->buttons[] = $button;

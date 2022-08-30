@@ -57,4 +57,8 @@ return [
 //        \App\Telegram\TestCommand::class,
     ],
 
+    'callbacks' => [
+//        \App\Telegram\TestCallback::class,
+    ],
+
 ];
