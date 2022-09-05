@@ -124,7 +124,7 @@ class Keyboard
         $type = $this->inline ? 'inline_keyboard' : 'keyboard';
 
         $keyboard = [
-            $type => [array_chunk($this->buttons, $this->buttons_in_row)],
+            $type => array_chunk($this->buttons, $this->buttons_in_row),
         ];
 
         if ($this->resizable) {
