@@ -61,4 +61,6 @@ return [
         \App\Telegram\TestCallback::class,
     ],
 
+    'text-handler' => Kalexhaym\LaravelTelegramBot\TextHandler::class,
+
 ];

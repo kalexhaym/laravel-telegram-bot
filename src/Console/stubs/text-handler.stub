@@ -1,0 +1,20 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kalexhaym\LaravelTelegramBot\Telegram;
+use Kalexhaym\LaravelTelegramBot\Executable;
+
+class {{ class }} implements Executable
+{
+    /**
+     * @param array $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
+    public function execute(array $message, Telegram $telegram): void
+    {
+
+    }
+}

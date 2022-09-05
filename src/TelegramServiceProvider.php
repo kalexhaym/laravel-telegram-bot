@@ -7,6 +7,7 @@ use Kalexhaym\LaravelTelegramBot\Console\SetHook;
 use Illuminate\Support\ServiceProvider;
 use Kalexhaym\LaravelTelegramBot\Console\TelegramCallbackMakeCommand;
 use Kalexhaym\LaravelTelegramBot\Console\TelegramCommandMakeCommand;
+use Kalexhaym\LaravelTelegramBot\Console\TextHandlerMakeCommand;
 
 class TelegramServiceProvider extends ServiceProvider
 {
@@ -67,6 +68,7 @@ class TelegramServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                TextHandlerMakeCommand::class,
                 TelegramCommandMakeCommand::class,
                 TelegramCallbackMakeCommand::class,
                 SetHook::class,

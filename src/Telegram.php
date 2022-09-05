@@ -162,6 +162,12 @@ class Telegram extends Curl
                         $class->execute($message, $this);
                     }
                 }
+            } else {
+                $class_name = config('telegram.text-handler');
+                if (!empty($class_name)) {
+                    $class = new $class_name();
+                    $class->execute($message, $this);
+                }
             }
         }
     }
