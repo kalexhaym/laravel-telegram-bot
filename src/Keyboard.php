@@ -20,6 +20,11 @@ class Keyboard
     private $one_time_keyboard;
 
     /**
+     * @var bool
+     */
+    private $selective;
+
+    /**
      * @var array
      */
     private $buttons = [];
@@ -28,6 +33,11 @@ class Keyboard
      * @var int
      */
     private $buttons_in_row = 4;
+
+    /**
+     * @var int
+     */
+    private $input_placeholder = null;
 
     /**
      * @return $this
@@ -60,6 +70,16 @@ class Keyboard
     }
 
     /**
+     * @return $this
+     */
+    public function selective(): Keyboard
+    {
+        $this->selective = true;
+
+        return $this;
+    }
+
+    /**
      * @param int $value
      *
      * @return $this
@@ -67,6 +87,18 @@ class Keyboard
     public function buttonsInRow(int $value): Keyboard
     {
         $this->buttons_in_row = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function inputPlaceholder(string $value): Keyboard
+    {
+        $this->input_placeholder = $value;
 
         return $this;
     }
@@ -133,6 +165,14 @@ class Keyboard
 
         if ($this->one_time_keyboard) {
             $keyboard['one_time_keyboard'] = true;
+        }
+
+        if ($this->selective) {
+            $keyboard['selective'] = true;
+        }
+
+        if (!empty($this->input_placeholder)) {
+            $keyboard['input_field_placeholder'] = $this->input_placeholder;
         }
 
         return $keyboard;
