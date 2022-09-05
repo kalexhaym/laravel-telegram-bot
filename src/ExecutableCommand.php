@@ -2,7 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-interface Executable
+interface ExecutableCommand
 {
     public function execute(array $message, Telegram $telegram);
 }

@@ -2,7 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-class TextHandler implements Executable
+class TextHandler implements ExecutableCommand
 {
     /**
      * @param array $message

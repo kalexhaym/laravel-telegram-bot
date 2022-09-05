@@ -143,11 +143,22 @@ class Telegram extends Curl
         if (!empty($update['callback_query'])) {
             $callback_query = $update['callback_query'];
             $message = $callback_query['message'];
-            $callback = $callback_query['data'];
+            $callback_data = explode(' ', $callback_query['data']);
 
-            if (key_exists($callback, $this->callbacks_list)) {
+            $params = [];
+
+            foreach ($callback_data as $item) {
+                list($k, $v) = explode('=', $item);
+                if ($k == 'callback') {
+                    $callback = $v;
+                } else {
+                    $params[$k] = $v;
+                }
+            }
+
+            if (!empty($callback) && key_exists($callback, $this->callbacks_list)) {
                 $class = new $this->callbacks_list[$callback]();
-                $class->execute($message, $this);
+                $class->execute($message, $this, $params);
                 $this->answerCallbackQuery($callback_query['id']);
             }
         }

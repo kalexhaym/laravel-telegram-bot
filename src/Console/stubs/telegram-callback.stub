@@ -15,10 +15,11 @@ class {{ class }} extends Callback
     /**
      * @param array $message
      * @param Telegram $telegram
+     * @param array $params
      *
      * @return void
      */
-    public function execute(array $message, Telegram $telegram): void
+    public function execute(array $message, Telegram $telegram, array $params = []): void
     {
         $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!');
     }

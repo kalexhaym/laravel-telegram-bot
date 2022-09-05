@@ -40,22 +40,43 @@ class Keyboard
     }
 
     /**
-     * @param $name
-     * @param null $callback
-     * @param bool $is_url
+     * @param string $name
+     * @param string|null $callback
+     * @param array $params
      *
      * @return $this
      */
-    public function addButton($name, $callback = null, bool $is_url = false): Keyboard
+    public function addButton(string $name, string $callback = null, array $params = []): Keyboard
     {
         $button = ['text' => $name];
 
         if (!empty($callback)) {
-            if ($is_url) {
-                $button['url'] = $callback;
-            } else {
-                $button['callback_data'] = $callback;
+            $button['callback_data'] = 'callback=' . $callback;
+
+            if (!empty($params)) {
+                foreach ($params as $key => $param) {
+                    $button['callback_data'] .= ' ' . $key . '=' . $param;
+                }
             }
+        }
+
+        $this->buttons[] = $button;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string|null $href
+     *
+     * @return $this
+     */
+    public function addLink(string $name, string $href = null): Keyboard
+    {
+        $button = ['text' => $name];
+
+        if (!empty($href)) {
+            $button['url'] = $href;
         }
 
         $this->buttons[] = $button;

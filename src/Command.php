@@ -2,7 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-abstract class Command implements Executable
+abstract class Command implements ExecutableCommand
 {
     /**
      * @var string

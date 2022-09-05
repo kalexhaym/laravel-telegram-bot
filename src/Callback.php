@@ -2,7 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-abstract class Callback implements Executable
+abstract class Callback implements ExecutableCallback
 {
     /**
      * @var string
