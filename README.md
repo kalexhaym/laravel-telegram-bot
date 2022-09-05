@@ -11,6 +11,10 @@
     php artisan make:telegram-command Test
     php artisan make:telegram-callback Test
 
+# Make Text Handler
+
+    php artisan make:telegram-text-handler Text
+
 # Setup
 
 After creating a Command or Callback, it must be registered in config/telegram.php
