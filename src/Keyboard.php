@@ -15,9 +15,19 @@ class Keyboard
     private $inline;
 
     /**
+     * @var bool
+     */
+    private $one_time_keyboard;
+
+    /**
      * @var array
      */
     private $buttons = [];
+
+    /**
+     * @var int
+     */
+    private $buttons_in_row = 4;
 
     /**
      * @return $this
@@ -35,6 +45,28 @@ class Keyboard
     public function inline(): Keyboard
     {
         $this->inline = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function oneTimeKeyboard(): Keyboard
+    {
+        $this->one_time_keyboard = true;
+
+        return $this;
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function buttonsInRow(int $value): Keyboard
+    {
+        $this->buttons_in_row = $value;
 
         return $this;
     }
@@ -92,11 +124,15 @@ class Keyboard
         $type = $this->inline ? 'inline_keyboard' : 'keyboard';
 
         $keyboard = [
-            $type => [$this->buttons],
+            $type => [array_chunk($this->buttons, $this->buttons_in_row)],
         ];
 
         if ($this->resizable) {
             $keyboard['resize_keyboard'] = true;
+        }
+
+        if ($this->one_time_keyboard) {
+            $keyboard['one_time_keyboard'] = true;
         }
 
         return $keyboard;
