@@ -313,6 +313,31 @@ class Telegram extends Curl
     /**
      * @param int $chat_id
      * @param int $message_id
+     * @param string $text
+     * @param array $reply_markup
+     *
+     * @return array
+     */
+    public function editMessageText(int $chat_id, int $message_id, string $text, array $reply_markup = []): array
+    {
+        $method = '/editMessageText';
+
+        $data = [
+            'chat_id' => $chat_id,
+            'message_id' => $message_id,
+            'text' => $text,
+        ];
+
+        if (!empty($reply_markup)) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        return $this->post($this->url . $method, $data);
+    }
+
+    /**
+     * @param int $chat_id
+     * @param int $message_id
      * @param array $reply_markup
      *
      * @return array
