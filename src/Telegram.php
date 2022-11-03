@@ -125,8 +125,10 @@ class Telegram extends Curl
         while(true) {
             $result = $this->getUpdates();
 
-            foreach ($result['data']['result'] as $update) {
-                $this->processUpdate($update);
+            if (!empty($result['data']['result'])) {
+                foreach ($result['data']['result'] as $update) {
+                    $this->processUpdate($update);
+                }
             }
 
             sleep(config('telegram.poll.sleep', 2));
