@@ -7,5 +7,5 @@ abstract class Callback implements ExecutableCallback
     /**
      * @var string
      */
-    public $callback;
+    public string $callback;
 }

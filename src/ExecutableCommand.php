@@ -4,5 +4,11 @@ namespace Kalexhaym\LaravelTelegramBot;
 
 interface ExecutableCommand
 {
-    public function execute(array $message, Telegram $telegram);
+    /**
+     * @param array    $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
+    public function execute(array $message, Telegram $telegram): void;
 }

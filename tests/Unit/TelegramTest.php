@@ -73,9 +73,9 @@ class TestCommand extends Command
     /**
      * @var string
      */
-    public $command = 'test-command';
+    public string $command = 'test-command';
 
-    public function execute(array $message, Telegram $telegram) {}
+    public function execute(array $message, Telegram $telegram): void {}
 }
 
 class TestCallback extends Callback
@@ -83,7 +83,7 @@ class TestCallback extends Callback
     /**
      * @var string
      */
-    public $callback = 'test-callback';
+    public string $callback = 'test-callback';
 
-    public function execute(array $message, Telegram $telegram, array $params = []) {}
+    public function execute(array $message, Telegram $telegram, array $params = []): void {}
 }

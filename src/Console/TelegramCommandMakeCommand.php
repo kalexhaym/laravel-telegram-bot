@@ -35,8 +35,10 @@ class TelegramCommandMakeCommand extends GeneratorCommand
      * Execute the console command.
      *
      * @throws FileNotFoundException
+     *
+     * @return bool
      */
-    public function handle()
+    public function handle(): bool
     {
         $name = $this->input->getArgument('name');
 
@@ -45,6 +47,8 @@ class TelegramCommandMakeCommand extends GeneratorCommand
         if (parent::handle() === false) {
             return false;
         }
+
+        return true;
     }
 
     /**

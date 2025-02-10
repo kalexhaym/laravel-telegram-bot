@@ -27,12 +27,12 @@ class SetHook extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $telegram = new Telegram();
 
-        $this->info($telegram->setWebhook());
+        $this->info(json_encode($telegram->setWebhook()));
     }
 }
