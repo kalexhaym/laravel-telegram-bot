@@ -23,4 +23,4 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=coverage.xml tests/
 
       - name: Submit code coverage report 🔭
-        run: bash <(curl -s https://codecov.io/bash)
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
