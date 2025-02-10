@@ -36,7 +36,7 @@ jobs:
         run: vendor/bin/pint
 
       - name: Remove Vendor
-        run: rm -rf vendor/
+        run: rm -rf vendor/; rm composer.lock
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
