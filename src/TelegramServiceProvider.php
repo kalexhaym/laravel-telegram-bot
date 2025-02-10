@@ -16,7 +16,7 @@ class TelegramServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerRoutes();
     }
@@ -26,7 +26,7 @@ class TelegramServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         if (!defined('TELEGRAM_PATH')) {
             define('TELEGRAM_PATH', realpath(__DIR__ . '/laravel-telegram-bot/'));
@@ -38,11 +38,11 @@ class TelegramServiceProvider extends ServiceProvider
     }
 
     /**
-     * Setup the configuration for Telegram.
+     * Set up the configuration for Telegram.
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/telegram.php', 'telegram'
@@ -54,7 +54,7 @@ class TelegramServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerRoutes()
+    protected function registerRoutes(): void
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
     }
@@ -64,7 +64,7 @@ class TelegramServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -78,11 +78,11 @@ class TelegramServiceProvider extends ServiceProvider
     }
 
     /**
-     * Setup the resource publishing groups for Telegram.
+     * Set up the resource publishing groups for Telegram.
      *
      * @return void
      */
-    protected function offerPublishing()
+    protected function offerPublishing(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([

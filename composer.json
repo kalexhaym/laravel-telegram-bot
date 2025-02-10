@@ -1,6 +1,11 @@
 {
     "name": "kalexhaym/laravel-telegram-bot",
-    "keywords": ["laravel", "telegram", "bot"],
+    "description": "Telegram Bot package for Laravel",
+    "keywords": [
+        "laravel",
+        "telegram",
+        "bot"
+    ],
     "type": "project",
     "license": "MIT",
     "autoload": {
@@ -10,14 +15,18 @@
     },
     "authors": [
         {
-            "name": "Aleksey Kovalenko",
+            "name": "Aleksei Kovalenko",
             "email": "kalexhaym@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "ext-json": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "laravel/framework": "^10.0 || ^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0 || ^11.0"
     },
     "extra": {
         "laravel": {

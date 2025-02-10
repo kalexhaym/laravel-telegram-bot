@@ -7,5 +7,5 @@ abstract class Command implements ExecutableCommand
     /**
      * @var string
      */
-    protected $command;
+    public $command;
 }

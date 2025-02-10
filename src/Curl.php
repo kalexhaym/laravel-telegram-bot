@@ -2,9 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-use App\Http\Controllers\Controller;
-
-class Curl extends Controller
+class Curl
 {
     /**
      * @param $curl
