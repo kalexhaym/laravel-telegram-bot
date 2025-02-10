@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
-use Illuminate\Foundation\Testing\TestCase;
+use Orchestra\Testbench\TestCase;
 use Kalexhaym\LaravelTelegramBot\Callback;
 use Kalexhaym\LaravelTelegramBot\Command;
 use Kalexhaym\LaravelTelegramBot\Telegram;

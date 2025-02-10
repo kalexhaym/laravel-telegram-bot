@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
-use Illuminate\Foundation\Testing\TestCase;
 use Kalexhaym\LaravelTelegramBot\Keyboard;
+use Orchestra\Testbench\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
