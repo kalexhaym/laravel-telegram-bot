@@ -1,3 +1,9 @@
+<p align="center">
+<a href="https://github.com/kalexhaym/laravel-telegram-bot/actions"><img src="https://github.com/kalexhaym/laravel-telegram-bot/workflows/Tests/badge.svg"></a>
+<a href="https://codecov.io/gh/kalexhaym/laravel-telegram-bot"><img src="https://codecov.io/gh/kalexhaym/laravel-telegram-bot/branch/master/graph/badge.svg" /></a>
+<a href="https://packagist.org/packages/kalexhaym/laravel-telegram-bot"><img alt="Packagist" src="https://img.shields.io/packagist/dt/kalexhaym/laravel-telegram-bot.svg"></a>
+</p>
+
 # Installation
 
     composer require kalexhaym/laravel-telegram-bot
@@ -19,7 +25,7 @@
 
 After creating a Command or Callback, it must be registered in config/telegram.php
 
-![commands-registration.png](commands-registration.png)
+![commands-registration.png](.github/IMAGES/commands-registration.png)![.github/IMAGES/commands-registration.png](commands-registration.png)
 
 Add Telegram Bot token in .env
 
