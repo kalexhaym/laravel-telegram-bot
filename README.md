@@ -25,7 +25,7 @@
 
 After creating a Command or Callback, it must be registered in config/telegram.php
 
-![commands-registration.png](.github/IMAGES/commands-registration.png)![.github/IMAGES/commands-registration.png](commands-registration.png)
+![commands-registration.png](.github/IMAGES/commands-registration.png)
 
 Add Telegram Bot token in .env
 
