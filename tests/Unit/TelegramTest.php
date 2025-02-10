@@ -140,7 +140,7 @@ class TelegramTest extends TestCase
         $result = $method->invokeArgs($class, ['message' => [
             'entities' => [
                 [
-                    'type' => 'bot_command',
+                    'type'   => 'bot_command',
                     'offset' => 0,
                     'length' => 1,
                 ],
@@ -158,7 +158,7 @@ class TelegramTest extends TestCase
                     'type' => 'text',
                 ],
                 [
-                    'type' => 'bot_command',
+                    'type'   => 'bot_command',
                     'offset' => 5,
                     'length' => 3,
                 ],
