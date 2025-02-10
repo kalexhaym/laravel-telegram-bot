@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
-use Orchestra\Testbench\TestCase;
 use Kalexhaym\LaravelTelegramBot\Callback;
 use Kalexhaym\LaravelTelegramBot\Command;
 use Kalexhaym\LaravelTelegramBot\Telegram;
+use Orchestra\Testbench\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
