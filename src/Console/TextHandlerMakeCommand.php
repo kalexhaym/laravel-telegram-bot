@@ -40,7 +40,7 @@ class TextHandlerMakeCommand extends GeneratorCommand
     {
         $name = $this->input->getArgument('name');
 
-        $this->input->setArgument('name', 'Telegram/' . $name . 'Handler');
+        $this->input->setArgument('name', 'Telegram/'.$name.'Handler');
 
         if (parent::handle() === false) {
             return false;

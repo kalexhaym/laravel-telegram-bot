@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/telegram-hook/' . config('telegram.bot.token'), [\Kalexhaym\LaravelTelegramBot\Telegram::class, 'hook'])->name('telegram-hook');
+Route::get('/telegram-hook/'.config('telegram.bot.token'), [\Kalexhaym\LaravelTelegramBot\Telegram::class, 'hook'])->name('telegram-hook');

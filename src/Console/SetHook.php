@@ -7,7 +7,6 @@ use Kalexhaym\LaravelTelegramBot\Telegram;
 
 /**
  * Class SetTelegramHook
- * @package App\Console\Commands
  */
 class SetHook extends Command
 {

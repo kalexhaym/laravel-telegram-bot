@@ -29,7 +29,7 @@ class Telegram extends Curl
      */
     public function __construct()
     {
-        $this->url = 'https://api.telegram.org/bot' . config('telegram.bot.token');
+        $this->url = 'https://api.telegram.org/bot'.config('telegram.bot.token');
 
         $this->commands_list = $this->loadCommands();
         $this->callbacks_list = $this->loadCallbacks();
@@ -76,8 +76,8 @@ class Telegram extends Curl
     {
         $method = '/setWebhook';
 
-        return $this->post($this->url . $method, [
-            'url' => route('telegram-hook')
+        return $this->post($this->url.$method, [
+            'url' => route('telegram-hook'),
         ]);
     }
 
@@ -98,19 +98,19 @@ class Telegram extends Curl
     {
         $method = '/getUpdates';
 
-        $cache_key = config('telegram.cache.key') . '-last-update';
+        $cache_key = config('telegram.cache.key').'-last-update';
 
         $offset = Cache::get($cache_key, 0);
 
         $data = [
-            'offset' => $offset + 1,
-            'limit' => config('telegram.poll.limit', 100),
+            'offset'  => $offset + 1,
+            'limit'   => config('telegram.poll.limit', 100),
             'timeout' => config('telegram.poll.timeout', 50),
         ];
 
-        $result = $this->post($this->url . $method, $data);
+        $result = $this->post($this->url.$method, $data);
 
-        if (!empty($result['data']['result'])) {
+        if (! empty($result['data']['result'])) {
             Cache::put($cache_key, last($result['data']['result'])['update_id']);
         }
 
@@ -122,10 +122,10 @@ class Telegram extends Curl
      */
     public function pollUpdates(): void
     {
-        while(true) {
+        while (true) {
             $result = $this->getUpdates();
 
-            if (!empty($result['data']['result'])) {
+            if (! empty($result['data']['result'])) {
                 foreach ($result['data']['result'] as $update) {
                     $this->processUpdate($update);
                 }
@@ -142,7 +142,7 @@ class Telegram extends Curl
      */
     private function processUpdate(array $update): void
     {
-        if (!empty($update['callback_query'])) {
+        if (! empty($update['callback_query'])) {
             $callback_query = $update['callback_query'];
             $message = $callback_query['message'];
             $callback_data = explode(' ', $callback_query['data']);
@@ -150,7 +150,7 @@ class Telegram extends Curl
             $params = [];
 
             foreach ($callback_data as $item) {
-                list($k, $v) = explode('=', $item);
+                [$k, $v] = explode('=', $item);
                 if ($k == 'callback') {
                     $callback = $v;
                 } else {
@@ -158,26 +158,26 @@ class Telegram extends Curl
                 }
             }
 
-            if (!empty($callback) && key_exists($callback, $this->callbacks_list)) {
+            if (! empty($callback) && array_key_exists($callback, $this->callbacks_list)) {
                 $class = new $this->callbacks_list[$callback]();
                 $class->execute($message, $this, $params);
                 $this->answerCallbackQuery($callback_query['id']);
             }
         }
 
-        if (!empty($update['message'])) {
+        if (! empty($update['message'])) {
             $message = $update['message'];
 
             if ($this->hasCommands($message)) {
                 foreach ($this->getCommands($message) as $command) {
-                    if (key_exists($command, $this->commands_list)) {
+                    if (array_key_exists($command, $this->commands_list)) {
                         $class = new $this->commands_list[$command]();
                         $class->execute($message, $this);
                     }
                 }
             } else {
                 $class_name = config('telegram.text-handler');
-                if (!empty($class_name)) {
+                if (! empty($class_name)) {
                     $class = new $class_name();
                     $class->execute($message, $this);
                 }
@@ -192,7 +192,7 @@ class Telegram extends Curl
      */
     private function hasCommands(array $message): bool
     {
-        return !empty($message['entities']) && in_array(self::BOT_COMMAND_TYPE, array_column($message['entities'], 'type'));
+        return ! empty($message['entities']) && in_array(self::BOT_COMMAND_TYPE, array_column($message['entities'], 'type'));
     }
 
     /**
@@ -230,14 +230,14 @@ class Telegram extends Curl
             'callback_query_id' => $callback_query_id,
         ];
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
-     * @param int $chat_id
+     * @param int    $chat_id
      * @param string $message
-     * @param array $reply_markup
-     * @param bool $disable_notification
+     * @param array  $reply_markup
+     * @param bool   $disable_notification
      *
      * @return array
      */
@@ -246,24 +246,24 @@ class Telegram extends Curl
         $method = '/sendMessage';
 
         $data = [
-            'chat_id' => $chat_id,
-            'text' => $message,
-            'disable_notification' => $disable_notification
+            'chat_id'              => $chat_id,
+            'text'                 => $message,
+            'disable_notification' => $disable_notification,
         ];
 
-        if (!empty($reply_markup)) {
+        if (! empty($reply_markup)) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
-     * @param int $chat_id
+     * @param int    $chat_id
      * @param string $document
-     * @param null $caption
-     * @param array $reply_markup
-     * @param bool $disable_notification
+     * @param null   $caption
+     * @param array  $reply_markup
+     * @param bool   $disable_notification
      *
      * @return array
      */
@@ -272,25 +272,25 @@ class Telegram extends Curl
         $method = '/sendDocument';
 
         $data = [
-            'chat_id' => $chat_id,
-            'document' => $document,
-            'caption' => $caption,
-            'disable_notification' => $disable_notification
+            'chat_id'              => $chat_id,
+            'document'             => $document,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
         ];
 
-        if (!empty($reply_markup)) {
+        if (! empty($reply_markup)) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
-     * @param int $chat_id
+     * @param int    $chat_id
      * @param string $photo
-     * @param null $caption
-     * @param array $reply_markup
-     * @param bool $disable_notification
+     * @param null   $caption
+     * @param array  $reply_markup
+     * @param bool   $disable_notification
      *
      * @return array
      */
@@ -299,24 +299,24 @@ class Telegram extends Curl
         $method = '/sendPhoto';
 
         $data = [
-            'chat_id' => $chat_id,
-            'photo' => $photo,
-            'caption' => $caption,
-            'disable_notification' => $disable_notification
+            'chat_id'              => $chat_id,
+            'photo'                => $photo,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
         ];
 
         if ($reply_markup) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
-     * @param int $chat_id
-     * @param int $message_id
+     * @param int    $chat_id
+     * @param int    $message_id
      * @param string $text
-     * @param array $reply_markup
+     * @param array  $reply_markup
      *
      * @return array
      */
@@ -325,21 +325,21 @@ class Telegram extends Curl
         $method = '/editMessageText';
 
         $data = [
-            'chat_id' => $chat_id,
+            'chat_id'    => $chat_id,
             'message_id' => $message_id,
-            'text' => $text,
+            'text'       => $text,
         ];
 
-        if (!empty($reply_markup)) {
+        if (! empty($reply_markup)) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
-     * @param int $chat_id
-     * @param int $message_id
+     * @param int   $chat_id
+     * @param int   $message_id
      * @param array $reply_markup
      *
      * @return array
@@ -349,15 +349,15 @@ class Telegram extends Curl
         $method = '/editMessageReplyMarkup';
 
         $data = [
-            'chat_id' => $chat_id,
+            'chat_id'    => $chat_id,
             'message_id' => $message_id,
         ];
 
-        if (!empty($reply_markup)) {
+        if (! empty($reply_markup)) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 
     /**
@@ -371,10 +371,10 @@ class Telegram extends Curl
         $method = '/deleteMessage';
 
         $data = [
-            'chat_id' => $chat_id,
+            'chat_id'    => $chat_id,
             'message_id' => $message_id,
         ];
 
-        return $this->post($this->url . $method, $data);
+        return $this->post($this->url.$method, $data);
     }
 }

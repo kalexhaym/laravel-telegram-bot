@@ -21,6 +21,7 @@ class KeyboardTest extends TestCase
     protected static function getMethod($name): ReflectionMethod
     {
         $class = new ReflectionClass(Keyboard::class);
+
         return $class->getMethod($name);
     }
 
@@ -34,7 +35,7 @@ class KeyboardTest extends TestCase
         $this->assertSame(true, $keyboard->get()['resize_keyboard']);
 
         $keyboard = new Keyboard();
-        $this->assertSame(false, key_exists('resize_keyboard', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('resize_keyboard', $keyboard->get()));
     }
 
     /**
@@ -44,12 +45,12 @@ class KeyboardTest extends TestCase
     {
         $keyboard = new Keyboard();
         $keyboard->inline();
-        $this->assertSame(true, key_exists('inline_keyboard', $keyboard->get()));
-        $this->assertSame(false, key_exists('keyboard', $keyboard->get()));
+        $this->assertSame(true, array_key_exists('inline_keyboard', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('keyboard', $keyboard->get()));
 
         $keyboard = new Keyboard();
-        $this->assertSame(true, key_exists('keyboard', $keyboard->get()));
-        $this->assertSame(false, key_exists('inline_keyboard', $keyboard->get()));
+        $this->assertSame(true, array_key_exists('keyboard', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('inline_keyboard', $keyboard->get()));
     }
 
     /**
@@ -62,7 +63,7 @@ class KeyboardTest extends TestCase
         $this->assertSame(true, $keyboard->get()['one_time_keyboard']);
 
         $keyboard = new Keyboard();
-        $this->assertSame(false, key_exists('one_time_keyboard', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('one_time_keyboard', $keyboard->get()));
     }
 
     /**
@@ -75,7 +76,7 @@ class KeyboardTest extends TestCase
         $this->assertSame(true, $keyboard->get()['selective']);
 
         $keyboard = new Keyboard();
-        $this->assertSame(false, key_exists('selective', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('selective', $keyboard->get()));
     }
 
     /**
@@ -84,7 +85,7 @@ class KeyboardTest extends TestCase
     public function testButtonsInRow(): void
     {
         $keyboard = new Keyboard();
-        foreach(range(1, 10) as $index) {
+        foreach (range(1, 10) as $index) {
             $keyboard->addButton((string) $index, (string) $index);
         }
         $this->assertSame(3, count($keyboard->get()['keyboard']));
@@ -92,7 +93,7 @@ class KeyboardTest extends TestCase
 
         $keyboard = new Keyboard();
         $keyboard->buttonsInRow(5);
-        foreach(range(1, 10) as $index) {
+        foreach (range(1, 10) as $index) {
             $keyboard->addButton((string) $index, (string) $index);
         }
         $this->assertSame(2, count($keyboard->get()['keyboard']));
@@ -100,7 +101,7 @@ class KeyboardTest extends TestCase
 
         $keyboard = new Keyboard();
         $keyboard->buttonsInRow(5);
-        foreach(range(1, 10) as $index) {
+        foreach (range(1, 10) as $index) {
             $keyboard->addLink((string) $index, (string) $index);
         }
         $this->assertSame(2, count($keyboard->get()['keyboard']));
@@ -117,7 +118,7 @@ class KeyboardTest extends TestCase
         $this->assertSame('inputPlaceholderString', $keyboard->get()['input_field_placeholder']);
 
         $keyboard = new Keyboard();
-        $this->assertSame(false, key_exists('input_field_placeholder', $keyboard->get()));
+        $this->assertSame(false, array_key_exists('input_field_placeholder', $keyboard->get()));
     }
 
     /**
@@ -131,11 +132,11 @@ class KeyboardTest extends TestCase
         $keyboard->addButton('testButton3');
         $this->assertSame([
             [
-                'text' => 'testButton',
+                'text'          => 'testButton',
                 'callback_data' => 'callback=testButtonCallback param=value',
             ],
             [
-                'text' => 'testButton2',
+                'text'          => 'testButton2',
                 'callback_data' => 'callback=testButtonCallback2 param2=value2',
             ],
             [
@@ -156,11 +157,11 @@ class KeyboardTest extends TestCase
         $this->assertSame([
             [
                 'text' => 'testLink',
-                'url' => 'testLinkHref',
+                'url'  => 'testLinkHref',
             ],
             [
                 'text' => 'testLink2',
-                'url' => 'testLinkHref2',
+                'url'  => 'testLinkHref2',
             ],
             [
                 'text' => 'testLink3',
@@ -194,11 +195,11 @@ class KeyboardTest extends TestCase
             'inline_keyboard' => [
                 0 => [
                     [
-                        'text' => 'testButton',
+                        'text'          => 'testButton',
                         'callback_data' => 'callback=testButtonCallback param=value',
                     ],
                     [
-                        'text' => 'testButton2',
+                        'text'          => 'testButton2',
                         'callback_data' => 'callback=testButtonCallback2 param2=value2',
                     ],
                     [
@@ -206,22 +207,22 @@ class KeyboardTest extends TestCase
                     ],
                     [
                         'text' => 'testLink',
-                        'url' => 'testLinkHref',
+                        'url'  => 'testLinkHref',
                     ],
                     [
                         'text' => 'testLink2',
-                        'url' => 'testLinkHref2',
+                        'url'  => 'testLinkHref2',
                     ],
                 ],
                 1 => [
                     [
                         'text' => 'testLink3',
                     ],
-                ]
+                ],
             ],
-            'resize_keyboard' => true,
-            'one_time_keyboard' => true,
-            'selective' => true,
+            'resize_keyboard'         => true,
+            'one_time_keyboard'       => true,
+            'selective'               => true,
             'input_field_placeholder' => 'inputPlaceholderString',
         ], $keyboard->get());
     }

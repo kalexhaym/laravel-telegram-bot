@@ -30,8 +30,8 @@ class Curl
 
     /**
      * @param string $url
-     * @param array $data
-     * @param array $header
+     * @param array  $data
+     * @param array  $header
      *
      * @return array
      */
@@ -54,7 +54,7 @@ class Curl
 
     /**
      * @param string $url
-     * @param array $header
+     * @param array  $header
      *
      * @return array
      */
@@ -75,8 +75,8 @@ class Curl
 
     /**
      * @param string $url
-     * @param array $data
-     * @param array $header
+     * @param array  $data
+     * @param array  $header
      *
      * @return array
      */
@@ -85,7 +85,7 @@ class Curl
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -99,8 +99,8 @@ class Curl
 
     /**
      * @param string $url
-     * @param array $data
-     * @param array $header
+     * @param array  $data
+     * @param array  $header
      *
      * @return array
      */
@@ -109,7 +109,7 @@ class Curl
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);

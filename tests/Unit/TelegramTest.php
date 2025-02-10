@@ -23,6 +23,7 @@ class TelegramTest extends TestCase
     protected static function getMethod($name): ReflectionMethod
     {
         $class = new ReflectionClass(Telegram::class);
+
         return $class->getMethod($name);
     }
 

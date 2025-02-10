@@ -104,22 +104,22 @@ class Keyboard
     }
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param string|null $callback
-     * @param array $params
+     * @param array       $params
      *
      * @return $this
      */
-    public function addButton(string $name, string $callback = null, array $params = []): Keyboard
+    public function addButton(string $name, ?string $callback = null, array $params = []): Keyboard
     {
         $button = ['text' => $name];
 
-        if (!empty($callback)) {
-            $button['callback_data'] = 'callback=' . $callback;
+        if (! empty($callback)) {
+            $button['callback_data'] = 'callback='.$callback;
 
-            if (!empty($params)) {
+            if (! empty($params)) {
                 foreach ($params as $key => $param) {
-                    $button['callback_data'] .= ' ' . $key . '=' . $param;
+                    $button['callback_data'] .= ' '.$key.'='.$param;
                 }
             }
         }
@@ -130,16 +130,16 @@ class Keyboard
     }
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param string|null $href
      *
      * @return $this
      */
-    public function addLink(string $name, string $href = null): Keyboard
+    public function addLink(string $name, ?string $href = null): Keyboard
     {
         $button = ['text' => $name];
 
-        if (!empty($href)) {
+        if (! empty($href)) {
             $button['url'] = $href;
         }
 
@@ -171,7 +171,7 @@ class Keyboard
             $keyboard['selective'] = true;
         }
 
-        if (!empty($this->input_placeholder)) {
+        if (! empty($this->input_placeholder)) {
             $keyboard['input_field_placeholder'] = $this->input_placeholder;
         }
 

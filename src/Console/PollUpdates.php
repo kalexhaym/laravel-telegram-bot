@@ -7,7 +7,6 @@ use Kalexhaym\LaravelTelegramBot\Telegram;
 
 /**
  * Class PollUpdates
- * @package App\Console\Commands
  */
 class PollUpdates extends Command
 {

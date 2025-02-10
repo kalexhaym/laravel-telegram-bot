@@ -40,7 +40,7 @@ class TelegramCallbackMakeCommand extends GeneratorCommand
     {
         $name = $this->input->getArgument('name');
 
-        $this->input->setArgument('name', 'Telegram/' . $name . 'Callback');
+        $this->input->setArgument('name', 'Telegram/'.$name.'Callback');
 
         if (parent::handle() === false) {
             return false;

@@ -10,7 +10,7 @@ return [
     */
 
     'bot' => [
-        'name' => env('TELEGRAM_BOT_NAME'),
+        'name'  => env('TELEGRAM_BOT_NAME'),
         'token' => env('TELEGRAM_TOKEN'),
     ],
 
@@ -21,8 +21,8 @@ return [
     */
 
     'poll' => [
-        'sleep' => env('TELEGRAM_POLL_SLEEP', 2),
-        'limit' => env('TELEGRAM_POLL_LIMIT', 100),
+        'sleep'   => env('TELEGRAM_POLL_SLEEP', 2),
+        'limit'   => env('TELEGRAM_POLL_LIMIT', 100),
         'timeout' => env('TELEGRAM_POLL_TIMEOUT', 50),
     ],
 
@@ -34,7 +34,7 @@ return [
 
     'curl' => [
         'error' => env('TELEGRAM_CURL_ERROR', false),
-        'info' => env('TELEGRAM_CURL_INFO', false),
+        'info'  => env('TELEGRAM_CURL_INFO', false),
     ],
 
     /*

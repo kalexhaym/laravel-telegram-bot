@@ -2,9 +2,9 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
+use Illuminate\Support\ServiceProvider;
 use Kalexhaym\LaravelTelegramBot\Console\PollUpdates;
 use Kalexhaym\LaravelTelegramBot\Console\SetHook;
-use Illuminate\Support\ServiceProvider;
 use Kalexhaym\LaravelTelegramBot\Console\TelegramCallbackMakeCommand;
 use Kalexhaym\LaravelTelegramBot\Console\TelegramCommandMakeCommand;
 use Kalexhaym\LaravelTelegramBot\Console\TextHandlerMakeCommand;
@@ -28,8 +28,8 @@ class TelegramServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (!defined('TELEGRAM_PATH')) {
-            define('TELEGRAM_PATH', realpath(__DIR__ . '/laravel-telegram-bot/'));
+        if (! defined('TELEGRAM_PATH')) {
+            define('TELEGRAM_PATH', realpath(__DIR__.'/laravel-telegram-bot/'));
         }
 
         $this->configure();
@@ -45,7 +45,7 @@ class TelegramServiceProvider extends ServiceProvider
     protected function configure(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/telegram.php', 'telegram'
+            __DIR__.'/../config/telegram.php', 'telegram'
         );
     }
 
@@ -86,7 +86,7 @@ class TelegramServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/telegram.php' => config_path('telegram.php'),
+                __DIR__.'/../config/telegram.php' => config_path('telegram.php'),
             ], 'telegram-config');
         }
     }

@@ -40,7 +40,7 @@ class TelegramCommandMakeCommand extends GeneratorCommand
     {
         $name = $this->input->getArgument('name');
 
-        $this->input->setArgument('name', 'Telegram/' . $name . 'Command');
+        $this->input->setArgument('name', 'Telegram/'.$name.'Command');
 
         if (parent::handle() === false) {
             return false;
