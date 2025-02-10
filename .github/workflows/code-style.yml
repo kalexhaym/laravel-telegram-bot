@@ -35,6 +35,9 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
+      - name: Remove Vendor
+        run: rm -rf vendor/
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

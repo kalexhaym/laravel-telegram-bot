@@ -49,4 +49,4 @@ jobs:
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit 🧪
-        run: vendor/bin/phpunit  --no-coverage --disable-coverage-ignore
+        run: vendor/bin/phpunit  --no-coverage --disable-coverage-ignore tests/
