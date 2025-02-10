@@ -1,0 +1,114 @@
+{
+    "name": "mockery/mockery",
+    "description": "Mockery is a simple yet flexible PHP mock object framework",
+    "license": "BSD-3-Clause",
+    "type": "library",
+    "keywords": [
+        "bdd",
+        "library",
+        "mock",
+        "mock objects",
+        "mockery",
+        "stub",
+        "tdd",
+        "test",
+        "test double",
+        "testing"
+    ],
+    "authors": [
+        {
+            "name": "Pádraic Brady",
+            "email": "padraic.brady@gmail.com",
+            "homepage": "https://github.com/padraic",
+            "role": "Author"
+        },
+        {
+            "name": "Dave Marshall",
+            "email": "dave.marshall@atstsolutions.co.uk",
+            "homepage": "https://davedevelopment.co.uk",
+            "role": "Developer"
+        },
+        {
+            "name": "Nathanael Esayeas",
+            "email": "nathanael.esayeas@protonmail.com",
+            "homepage": "https://github.com/ghostwriter",
+            "role": "Lead Developer"
+        }
+    ],
+    "homepage": "https://github.com/mockery/mockery",
+    "support": {
+        "issues": "https://github.com/mockery/mockery/issues",
+        "source": "https://github.com/mockery/mockery",
+        "docs": "https://docs.mockery.io/",
+        "rss": "https://github.com/mockery/mockery/releases.atom",
+        "security": "https://github.com/mockery/mockery/security/advisories"
+    },
+    "require": {
+        "php": ">=7.3",
+        "lib-pcre": ">=7.0",
+        "hamcrest/hamcrest-php": "^2.0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=9.6.11 <10.4"
+    },
+    "conflict": {
+        "phpunit/phpunit": "<8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mockery\\": "library/Mockery"
+        },
+        "files": [
+          "library/helpers.php",
+          "library/Mockery.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mockery\\Tests\\": "tests"
+        },
+        "files": [
+            "fixtures/autoload.php",
+            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.3.999"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "up": "@composer update --no-interaction --no-progress --prefer-stable",
+        "check": [
+            "@composer validate",
+            "@cs",
+            "@test",
+            "@psalm"
+        ],
+        "docs": "tools/phpdocumentor -d library -t docs/api",
+        "cs": "tools/php-cs-fixer fix --verbose --diff || true",
+        "phpunit": "tools/phpunit --colors=always --testdox --stop-on-failure",
+        "phpunit:coverage": "tools/phpunit --colors=always --testdox --stop-on-failure --coverage-clover=coverage.xml",
+        "psalm": "@psalm:shepherd",
+        "psalm:dev": [
+            "@psalm:baseline",
+            "@psalm:security",
+            "@psalm:dry-run"
+        ],
+        "psalm:baseline": "tools/psalm --no-diff --no-cache --set-baseline=psalm-baseline.xml --stats --php-version=7.3",
+        "psalm:dry-run": "tools/psalm --no-cache  --alter --issues=all --dry-run",
+        "psalm:security": "tools/psalm --no-diff --no-cache --taint-analysis --php-version=7.3",
+        "psalm:shepherd": "tools/psalm --no-diff --no-cache --shepherd --stats --php-version=7.3",
+        "test": [
+            "@phpunit",
+            "@psalm"
+        ],
+        "phive:install": "phive install --copy --force-accept-unsigned ",
+        "phive:update": [
+            "phive update --force-accept-unsigned",
+            "phive purge"
+        ]
+    }
+}
