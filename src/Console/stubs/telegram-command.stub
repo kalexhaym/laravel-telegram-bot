@@ -11,7 +11,7 @@ class {{ class }} extends Command
     /**
      * @var string
      */
-    public $command = '/start';
+    public string $command = '/start';
 
     /**
      * @param array $message

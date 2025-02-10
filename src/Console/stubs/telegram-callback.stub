@@ -10,7 +10,7 @@ class {{ class }} extends Callback
     /**
      * @var string
      */
-    public $callback = 'callback';
+    public string $callback = 'callback';
 
     /**
      * @param array $message
