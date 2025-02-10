@@ -83,8 +83,10 @@ class Telegram extends Curl
 
     /**
      * @param Request $request
+     *
+     * @return void
      */
-    public function hook(Request $request)
+    public function hook(Request $request): void
     {
         $update = json_decode($request->getContent(), true);
 

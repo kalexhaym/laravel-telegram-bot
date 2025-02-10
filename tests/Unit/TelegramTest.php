@@ -66,6 +66,120 @@ class TelegramTest extends TestCase
             'test-callback' => 'Kalexhaym\LaravelTelegramBot\Tests\Unit\TestCallback',
         ], $result);
     }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testHasCommands(): void
+    {
+        $this->app['config']->set('telegram.commands', [
+            TestCommand::class,
+        ]);
+        $this->app['config']->set('telegram.callbacks', [
+            TestCallback::class,
+        ]);
+
+        $method = self::getMethod('hasCommands');
+        $class = new Telegram();
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'bot_command',
+                ],
+                [
+                    'type' => 'text',
+                ],
+            ],
+        ]]);
+        $this->assertSame(true, $result);
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'text',
+                ],
+                [
+                    'type' => 'bot_command',
+                ],
+            ],
+        ]]);
+        $this->assertSame(true, $result);
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'text',
+                ],
+                [
+                    'type' => 'text',
+                ],
+            ],
+        ]]);
+        $this->assertSame(false, $result);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testGetCommands(): void
+    {
+        $this->app['config']->set('telegram.commands', [
+            TestCommand::class,
+        ]);
+        $this->app['config']->set('telegram.callbacks', [
+            TestCallback::class,
+        ]);
+
+        $method = self::getMethod('getCommands');
+        $class = new Telegram();
+
+        $result = $method->invokeArgs($class, ['message' => []]);
+        $this->assertSame([], $result);
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'bot_command',
+                    'offset' => 0,
+                    'length' => 1,
+                ],
+                [
+                    'type' => 'text',
+                ],
+            ],
+            'text' => 'test-text',
+        ]]);
+        $this->assertSame(['t'], $result);
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'text',
+                ],
+                [
+                    'type' => 'bot_command',
+                    'offset' => 5,
+                    'length' => 3,
+                ],
+            ],
+            'text' => 'test-text',
+        ]]);
+        $this->assertSame(['tex'], $result);
+
+        $result = $method->invokeArgs($class, ['message' => [
+            'entities' => [
+                [
+                    'type' => 'text',
+                ],
+                [
+                    'type' => 'text',
+                ],
+            ],
+            'text' => 'test-text',
+        ]]);
+        $this->assertSame([], $result);
+    }
 }
 
 class TestCommand extends Command
