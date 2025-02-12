@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Cache;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
+use Kalexhaym\LaravelTelegramBot\Traits\Curl;
 
-class Telegram extends Curl
+class Telegram
 {
+    use Curl;
+
     const BOT_COMMAND_TYPE = 'bot_command';
 
     /**

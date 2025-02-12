@@ -1,8 +1,8 @@
 <?php
 
-namespace Kalexhaym\LaravelTelegramBot;
+namespace Kalexhaym\LaravelTelegramBot\Traits;
 
-class Curl
+trait Curl
 {
     /**
      * @param $curl

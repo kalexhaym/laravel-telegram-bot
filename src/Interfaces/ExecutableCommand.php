@@ -1,8 +1,10 @@
 <?php
 
-namespace Kalexhaym\LaravelTelegramBot;
+namespace Kalexhaym\LaravelTelegramBot\Interfaces;
 
-interface Executable
+use Kalexhaym\LaravelTelegramBot\Telegram;
+
+interface ExecutableCommand
 {
     /**
      * @param array    $message

@@ -1,6 +1,8 @@
 <?php
 
-namespace Kalexhaym\LaravelTelegramBot;
+namespace Kalexhaym\LaravelTelegramBot\Interfaces;
+
+use Kalexhaym\LaravelTelegramBot\Telegram;
 
 interface ExecutableCallback
 {

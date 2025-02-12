@@ -2,6 +2,8 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
+use Kalexhaym\LaravelTelegramBot\Interfaces\ExecutableCallback;
+
 abstract class Callback implements ExecutableCallback
 {
     /**
