@@ -28,13 +28,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Curl Configuration
+    | Http Configuration
     |--------------------------------------------------------------------------
     */
 
-    'curl' => [
-        'error' => env('TELEGRAM_CURL_ERROR', false),
-        'info'  => env('TELEGRAM_CURL_INFO', false),
+    'http' => [
+        'debug' => env('TELEGRAM_HTTP_DEBUG', false),
     ],
 
     /*

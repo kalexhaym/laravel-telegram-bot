@@ -3,16 +3,17 @@
 namespace Kalexhaym\LaravelTelegramBot;
 
 use Exception;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
-use Kalexhaym\LaravelTelegramBot\Traits\Curl;
+use Kalexhaym\LaravelTelegramBot\Traits\Requests;
 
 class Telegram
 {
-    use Curl;
+    use Requests;
 
     const BOT_COMMAND_TYPE = 'bot_command';
 
@@ -138,6 +139,8 @@ class Telegram
     }
 
     /**
+     * @throws ConnectionException
+     *
      * @return array
      */
     public function getUpdates(): array
@@ -154,7 +157,7 @@ class Telegram
             'timeout' => config('telegram.poll.timeout', 50),
         ];
 
-        $result = $this->post($this->url.$method, $data);
+        $result = $this->post($this->url.$method, $data, [], config('telegram.poll.timeout', 50) + 5);
 
         if (! empty($result['data']['result'])) {
             Cache::put($cache_key, last($result['data']['result'])['update_id']);
