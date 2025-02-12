@@ -9,7 +9,7 @@ trait Curl
      *
      * @return array
      */
-    protected function result($curl): array
+    public function result($curl): array
     {
         $result = [
             'data' => curl_exec($curl),
@@ -35,7 +35,7 @@ trait Curl
      *
      * @return array
      */
-    protected function post(string $url, array $data, array $header = []): array
+    public function post(string $url, array $data, array $header = []): array
     {
         $curl = curl_init();
 
@@ -58,7 +58,7 @@ trait Curl
      *
      * @return array
      */
-    protected function get(string $url, array $header = []): array
+    public function get(string $url, array $header = []): array
     {
         $curl = curl_init();
 
@@ -80,7 +80,7 @@ trait Curl
      *
      * @return array
      */
-    protected function put(string $url, array $data, array $header = []): array
+    public function put(string $url, array $data, array $header = []): array
     {
         $curl = curl_init();
 
@@ -104,7 +104,7 @@ trait Curl
      *
      * @return array
      */
-    protected function delete(string $url, array $data, array $header = []): array
+    public function delete(string $url, array $data, array $header = []): array
     {
         $curl = curl_init();
 
