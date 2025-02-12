@@ -51,9 +51,9 @@ class TelegramServiceProviderTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws ReflectionException
+     *
+     * @return void
      */
     public function testConfigure(): void
     {
@@ -64,9 +64,9 @@ class TelegramServiceProviderTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws ReflectionException
+     *
+     * @return void
      */
     public function testRegisterRoutes(): void
     {
@@ -77,9 +77,9 @@ class TelegramServiceProviderTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws ReflectionException
+     *
+     * @return void
      */
     public function testRegisterCommands(): void
     {
@@ -90,9 +90,9 @@ class TelegramServiceProviderTest extends TestCase
     }
 
     /**
-     * @return void
-     *
      * @throws ReflectionException
+     *
+     * @return void
      */
     public function testOfferPublishing(): void
     {
