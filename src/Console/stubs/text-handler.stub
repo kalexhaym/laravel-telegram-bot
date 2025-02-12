@@ -3,9 +3,9 @@
 namespace {{ namespace }};
 
 use Kalexhaym\LaravelTelegramBot\Telegram;
-use Kalexhaym\LaravelTelegramBot\Executable;
+use Kalexhaym\LaravelTelegramBot\DefaultTextHandler;
 
-class {{ class }} implements Executable
+class {{ class }} extends DefaultTextHandler
 {
     /**
      * @param array $message

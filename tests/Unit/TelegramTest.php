@@ -6,7 +6,11 @@ namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
 use Kalexhaym\LaravelTelegramBot\Callback;
 use Kalexhaym\LaravelTelegramBot\Command;
+use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
 use Kalexhaym\LaravelTelegramBot\Telegram;
+use Kalexhaym\LaravelTelegramBot\TextHandler;
 use Orchestra\Testbench\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -44,6 +48,15 @@ class TelegramTest extends TestCase
         $this->assertSame([
             'test-command' => 'Kalexhaym\LaravelTelegramBot\Tests\Unit\TestCommand',
         ], $result);
+
+        $this->app['config']->set('telegram.commands', [
+            TestTextHandler::class,
+        ]);
+        $this->app['config']->set('telegram.callbacks', []);
+
+        $this->expectException(CommandException::class);
+        $class = new Telegram();
+        $method->invokeArgs($class, []);
     }
 
     /**
@@ -51,20 +64,50 @@ class TelegramTest extends TestCase
      */
     public function testLoadCallbacks(): void
     {
-        $this->app['config']->set('telegram.commands', [
-            TestCommand::class,
-        ]);
+        $this->app['config']->set('telegram.commands', []);
         $this->app['config']->set('telegram.callbacks', [
             TestCallback::class,
         ]);
 
         $method = self::getMethod('loadCallbacks');
+
         $class = new Telegram();
         $result = $method->invokeArgs($class, []);
 
         $this->assertSame([
             'test-callback' => 'Kalexhaym\LaravelTelegramBot\Tests\Unit\TestCallback',
         ], $result);
+
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', [
+            TestTextHandler::class,
+        ]);
+
+        $this->expectException(CallbackException::class);
+        $class = new Telegram();
+        $method->invokeArgs($class, []);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testLoadTextHandler(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+
+        $method = self::getMethod('loadTextHandler');
+
+        $class = new Telegram();
+        $result = $method->invokeArgs($class, []);
+        $this->assertInstanceOf(TextHandler::class, $result);
+
+        $this->app['config']->set('telegram.text-handler', TestTextHandler::class);
+        $this->assertInstanceOf(TextHandler::class, $result);
+
+        $this->app['config']->set('telegram.text-handler', TestCommand::class);
+        $this->expectException(TextHandlerException::class);
+        new Telegram();
     }
 
     /**
@@ -189,6 +232,12 @@ class TestCommand extends Command
      */
     public string $command = 'test-command';
 
+    /**
+     * @param array    $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
     public function execute(array $message, Telegram $telegram): void {}
 }
 
@@ -199,5 +248,23 @@ class TestCallback extends Callback
      */
     public string $callback = 'test-callback';
 
+    /**
+     * @param array    $message
+     * @param Telegram $telegram
+     * @param array    $params
+     *
+     * @return void
+     */
     public function execute(array $message, Telegram $telegram, array $params = []): void {}
+}
+
+class TestTextHandler extends TextHandler
+{
+    /**
+     * @param array    $message
+     * @param Telegram $telegram
+     *
+     * @return void
+     */
+    public function execute(array $message, Telegram $telegram): void {}
 }

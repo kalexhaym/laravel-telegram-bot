@@ -2,8 +2,12 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
 
 class Telegram extends Curl
 {
@@ -12,30 +16,39 @@ class Telegram extends Curl
     /**
      * @var string
      */
-    private $url;
+    private string $url;
 
     /**
      * @var array
      */
-    private $commands_list;
+    private array $commands_list;
 
     /**
      * @var array
      */
-    private $callbacks_list;
+    private array $callbacks_list;
+
+    /**
+     * @var TextHandler
+     */
+    private TextHandler $text_handler;
 
     /**
      * Telegram constructor.
+     *
+     * @throws Exception
      */
     public function __construct()
     {
         $this->url = 'https://api.telegram.org/bot'.config('telegram.bot.token');
-
         $this->commands_list = $this->loadCommands();
         $this->callbacks_list = $this->loadCallbacks();
+        $this->text_handler = $this->loadTextHandler();
     }
 
     /**
+     * @throws CommandException
+     *
      * @return array
      */
     private function loadCommands(): array
@@ -46,6 +59,9 @@ class Telegram extends Curl
 
         foreach ($classes as $class_name) {
             $class = new $class_name();
+            if (! $class instanceof Command) {
+                throw new CommandException($class_name.' is not a valid command');
+            }
             $commands_list[$class->command] = $class_name;
         }
 
@@ -53,6 +69,8 @@ class Telegram extends Curl
     }
 
     /**
+     * @throws CallbackException
+     *
      * @return array
      */
     private function loadCallbacks(): array
@@ -63,10 +81,33 @@ class Telegram extends Curl
 
         foreach ($classes as $class_name) {
             $class = new $class_name();
+            if (! $class instanceof Callback) {
+                throw new CallbackException($class_name.' is not a valid callback');
+            }
             $commands_list[$class->callback] = $class_name;
         }
 
         return $commands_list;
+    }
+
+    /**
+     * @throws TextHandlerException
+     *
+     * @return TextHandler
+     */
+    private function loadTextHandler(): TextHandler
+    {
+        $class_name = config('telegram.text-handler');
+        if (! empty($class_name)) {
+            $text_handler = new $class_name();
+            if (! $text_handler instanceof TextHandler) {
+                throw new TextHandlerException($class_name.' is not a valid text handler');
+            }
+
+            return $text_handler;
+        }
+
+        return new DefaultTextHandler();
     }
 
     /**
@@ -178,11 +219,7 @@ class Telegram extends Curl
                     }
                 }
             } else {
-                $class_name = config('telegram.text-handler');
-                if (! empty($class_name)) {
-                    $class = new $class_name();
-                    $class->execute($message, $this);
-                }
+                $this->text_handler->execute($message, $this);
             }
         }
     }
