@@ -163,7 +163,7 @@ class Message
     }
 
     /**
-     * @param string $document
+     * @param string|Document $document
      * @param null   $caption
      * @param array  $reply_markup
      * @param bool   $disable_notification
@@ -172,13 +172,12 @@ class Message
      *
      * @return array
      */
-    public function sendDocument(string $document, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendDocument(string|Document $document, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendDocument';
 
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
-            'document'             => $document,
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
         ];
@@ -187,7 +186,13 @@ class Message
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($method, $data);
+        if ($document instanceof Document) {
+            return $this->post($method, $data, $document->get());
+        } else {
+            $data['document'] = $document;
+
+            return $this->post($method, $data);
+        }
     }
 
     /**
