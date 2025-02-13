@@ -187,9 +187,10 @@ class TelegramTest extends TestCase
         $this->app['config']->set('telegram.callbacks', []);
         $this->app['config']->set('telegram.poll.limit', 100);
         $this->app['config']->set('telegram.poll.timeout', 50);
+        $this->app['config']->set('telegram.cache.key', 'test-telegram');
 
         Http::fake([
-            $this->testUrl.'/getUpdates' => Http::response(['success' => true], 200),
+            $this->testUrl.'/getUpdates' => Http::response(['success' => true, 'data' => ['result' => [['update_id' => 1]]]], 200),
         ]);
 
         $class = new Telegram();
@@ -197,7 +198,7 @@ class TelegramTest extends TestCase
         $response = $class->getUpdates();
 
         $this->assertArrayHasKey('data', $response);
-        $this->assertEquals(['success' => true], $response['data']);
+        $this->assertEquals(['success' => true, 'data' => ['result' => [['update_id' => 1]]]], $response['data']);
 
         Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/getUpdates' &&
@@ -225,6 +226,7 @@ class TelegramTest extends TestCase
 
         $method = self::getMethod('processUpdate');
         $class = new Telegram();
+
         $method->invokeArgs($class, ['update' => [
             'callback_query' => [
                 'message' => [
@@ -233,7 +235,7 @@ class TelegramTest extends TestCase
                     ],
                     'message_id' => 1,
                 ],
-                'data' => 'callback=test',
+                'data' => 'callback=test test=test',
             ],
             'message' => [
                 'chat' => [
@@ -250,6 +252,17 @@ class TelegramTest extends TestCase
                         'type' => 'text',
                     ],
                 ],
+                'text' => 'test',
+            ],
+        ]]);
+        $this->assertTrue(true);
+
+        $method->invokeArgs($class, ['update' => [
+            'message' => [
+                'chat' => [
+                    'id' => 1,
+                ],
+                'message_id' => 1,
                 'text' => 'test',
             ],
         ]]);
