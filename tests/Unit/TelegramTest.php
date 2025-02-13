@@ -264,7 +264,7 @@ class TelegramTest extends TestCase
                     'id' => 1,
                 ],
                 'message_id' => 1,
-                'text' => 'test',
+                'text'       => 'test',
             ],
         ]]);
         $this->assertTrue(true);
