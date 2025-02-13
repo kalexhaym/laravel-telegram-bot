@@ -190,7 +190,7 @@ class MessageTest extends TestCase
 
         $reply_markup = ['markup'];
 
-        $response = $class->sendText('Test Text', $reply_markup, true);
+        $response = $class->sendMessage('Test Text', $reply_markup, true);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);

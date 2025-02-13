@@ -79,41 +79,13 @@ class Message
      *
      * @return array
      */
-    public function sendText(string $message, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendMessage(string $message, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendMessage';
 
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'text'                 => $message,
-            'disable_notification' => $disable_notification,
-        ];
-
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
-        }
-
-        return $this->post($method, $data);
-    }
-
-    /**
-     * @param string $document
-     * @param null   $caption
-     * @param array  $reply_markup
-     * @param bool   $disable_notification
-     *
-     * @throws ConnectionException
-     *
-     * @return array
-     */
-    public function sendDocument(string $document, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
-    {
-        $method = '/sendDocument';
-
-        $data = [
-            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
-            'document'             => $document,
-            'caption'              => $caption,
             'disable_notification' => $disable_notification,
         ];
 
@@ -146,6 +118,34 @@ class Message
         ];
 
         if ($reply_markup) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        return $this->post($method, $data);
+    }
+
+    /**
+     * @param string $document
+     * @param null   $caption
+     * @param array  $reply_markup
+     * @param bool   $disable_notification
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendDocument(string $document, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    {
+        $method = '/sendDocument';
+
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            'document'             => $document,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
+        ];
+
+        if (! empty($reply_markup)) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 

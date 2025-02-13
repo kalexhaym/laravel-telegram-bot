@@ -22,6 +22,6 @@ class MyChatIDCommand extends Command
      */
     public function execute(Message $message): void
     {
-        $message->sendText("Your Chat ID is {$message->chat_id}");
+        $message->sendMessage("Your Chat ID is {$message->chat_id}");
     }
 }

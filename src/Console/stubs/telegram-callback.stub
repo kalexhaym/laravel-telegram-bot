@@ -23,6 +23,6 @@ class {{ class }} extends Callback
      */
     public function execute(Message $message, array $params = []): void
     {
-        $message->sendText('If you receive this message, then everything is working!');
+        $message->sendMessage('If you receive this message, then everything is working!');
     }
 }
