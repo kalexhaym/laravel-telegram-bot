@@ -43,8 +43,11 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'http' => [
-        'debug' => env('TELEGRAM_HTTP_DEBUG', false),
+    'debug' => [
+        'http' => env('TELEGRAM_DEBUG_HTTP', false),
+
+        // Force sending messages to this chat, bot must be a member of the chat
+        'chat_id' => env('TELEGRAM_DEBUG_CHAT_ID'),
     ],
 
     /*
@@ -64,11 +67,13 @@ return [
     */
 
     'commands' => [
-        \App\Telegram\TestCommand::class,
+        \App\Telegram\StartCommand::class,
+
+        \Kalexhaym\LaravelTelegramBot\Commands\MyChatIDCommand::class,
     ],
 
     'callbacks' => [
-        \App\Telegram\TestCallback::class,
+        \App\Telegram\StartCallback::class,
     ],
 
     'text-handler' => Kalexhaym\LaravelTelegramBot\DefaultTextHandler::class,

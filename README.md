@@ -14,12 +14,12 @@
 
 # Make Commands and Callbacks
 
-    php artisan make:telegram-command Test
-    php artisan make:telegram-callback Test
+    php artisan make:telegram-command Start
+    php artisan make:telegram-callback Start
 
 # Make Text Handler
 
-    php artisan make:telegram-text-handler Text
+    php artisan make:telegram-text-handler
 
 # Setup
 

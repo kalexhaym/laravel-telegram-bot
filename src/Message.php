@@ -84,7 +84,7 @@ class Message
         $method = '/sendMessage';
 
         $data = [
-            'chat_id'              => $this->chat_id,
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'text'                 => $message,
             'disable_notification' => $disable_notification,
         ];
@@ -111,7 +111,7 @@ class Message
         $method = '/sendDocument';
 
         $data = [
-            'chat_id'              => $this->chat_id,
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'document'             => $document,
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
@@ -139,7 +139,7 @@ class Message
         $method = '/sendPhoto';
 
         $data = [
-            'chat_id'              => $this->chat_id,
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'photo'                => $photo,
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
