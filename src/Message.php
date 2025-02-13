@@ -98,7 +98,7 @@ class Message
 
     /**
      * @param string|Photo $photo
-     * @param null         $caption
+     * @param string|null  $caption
      * @param array        $reply_markup
      * @param bool         $disable_notification
      *
@@ -106,7 +106,7 @@ class Message
      *
      * @return array
      */
-    public function sendPhoto(string|Photo $photo, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendPhoto(string|Photo $photo, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendPhoto';
 
@@ -131,7 +131,7 @@ class Message
 
     /**
      * @param string|Audio $audio
-     * @param null         $caption
+     * @param string|null  $caption
      * @param array        $reply_markup
      * @param bool         $disable_notification
      *
@@ -139,7 +139,7 @@ class Message
      *
      * @return array
      */
-    public function sendAudio(string|Audio $audio, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendAudio(string|Audio $audio, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendAudio';
 
@@ -164,7 +164,7 @@ class Message
 
     /**
      * @param string|Document $document
-     * @param null            $caption
+     * @param string|null     $caption
      * @param array           $reply_markup
      * @param bool            $disable_notification
      *
@@ -172,7 +172,7 @@ class Message
      *
      * @return array
      */
-    public function sendDocument(string|Document $document, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendDocument(string|Document $document, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendDocument';
 
