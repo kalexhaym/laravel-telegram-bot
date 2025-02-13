@@ -81,8 +81,6 @@ class Message
      */
     public function sendMessage(string $message, array $reply_markup = [], bool $disable_notification = false): array
     {
-        $method = '/sendMessage';
-
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'text'                 => $message,
@@ -93,7 +91,7 @@ class Message
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($method, $data);
+        return $this->post('/sendMessage', $data);
     }
 
     /**
@@ -108,8 +106,6 @@ class Message
      */
     public function sendPhoto(string|Photo $photo, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
-        $method = '/sendPhoto';
-
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
@@ -121,11 +117,11 @@ class Message
         }
 
         if ($photo instanceof Photo) {
-            return $this->post($method, $data, $photo->get());
+            return $this->post('/sendPhoto', $data, $photo->get());
         } else {
             $data['photo'] = $photo;
 
-            return $this->post($method, $data);
+            return $this->post('/sendPhoto', $data);
         }
     }
 
@@ -141,8 +137,6 @@ class Message
      */
     public function sendAudio(string|Audio $audio, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
-        $method = '/sendAudio';
-
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
@@ -154,11 +148,11 @@ class Message
         }
 
         if ($audio instanceof Audio) {
-            return $this->post($method, $data, $audio->get());
+            return $this->post('/sendAudio', $data, $audio->get());
         } else {
             $data['audio'] = $audio;
 
-            return $this->post($method, $data);
+            return $this->post('/sendAudio', $data);
         }
     }
 
@@ -174,8 +168,6 @@ class Message
      */
     public function sendDocument(string|Document $document, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
-        $method = '/sendDocument';
-
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
@@ -187,11 +179,11 @@ class Message
         }
 
         if ($document instanceof Document) {
-            return $this->post($method, $data, $document->get());
+            return $this->post('/sendDocument', $data, $document->get());
         } else {
             $data['document'] = $document;
 
-            return $this->post($method, $data);
+            return $this->post('/sendDocument', $data);
         }
     }
 
@@ -207,8 +199,6 @@ class Message
      */
     public function sendVideo(string|Video $video, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
-        $method = '/sendVideo';
-
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
@@ -220,11 +210,11 @@ class Message
         }
 
         if ($video instanceof Video) {
-            return $this->post($method, $data, $video->get());
+            return $this->post('/sendVideo', $data, $video->get());
         } else {
             $data['video'] = $video;
 
-            return $this->post($method, $data);
+            return $this->post('/sendVideo', $data);
         }
     }
 
@@ -237,14 +227,10 @@ class Message
      */
     public function setChatTitle(string $title): array
     {
-        $method = '/setChatTitle';
-
-        $data = [
+        return $this->post('/setChatTitle', [
             'chat_id' => $this->chat_id,
             'title'   => $title,
-        ];
-
-        return $this->post($method, $data);
+        ]);
     }
 
     /**
@@ -256,14 +242,10 @@ class Message
      */
     public function setChatDescription(string $description): array
     {
-        $method = '/setChatDescription';
-
-        $data = [
+        return $this->post('/setChatDescription', [
             'chat_id'       => $this->chat_id,
             'description'   => $description,
-        ];
-
-        return $this->post($method, $data);
+        ]);
     }
 
     /**
@@ -275,13 +257,9 @@ class Message
      */
     public function answerCallbackQuery(int $callback_query_id): array
     {
-        $method = '/answerCallbackQuery';
-
-        $data = [
+        return $this->post('/answerCallbackQuery', [
             'callback_query_id' => $callback_query_id,
-        ];
-
-        return $this->post($method, $data);
+        ]);
     }
 
     /**
@@ -293,8 +271,6 @@ class Message
      */
     public function editMessageText(string $text): array
     {
-        $method = '/editMessageText';
-
         $data = [
             'chat_id'    => $this->chat_id,
             'message_id' => $this->message_id,
@@ -305,7 +281,7 @@ class Message
             $data['reply_markup'] = json_encode($this->reply_markup);
         }
 
-        return $this->post($method, $data);
+        return $this->post('/editMessageText', $data);
     }
 
     /**
@@ -317,15 +293,11 @@ class Message
      */
     public function editMessageReplyMarkup(array $reply_markup = []): array
     {
-        $method = '/editMessageReplyMarkup';
-
-        $data = [
+        return $this->post('/editMessageReplyMarkup', [
             'chat_id'      => $this->chat_id,
             'message_id'   => $this->message_id,
             'reply_markup' => json_encode($reply_markup),
-        ];
-
-        return $this->post($method, $data);
+        ]);
     }
 
     /**
@@ -335,13 +307,9 @@ class Message
      */
     public function deleteMessage(): array
     {
-        $method = '/deleteMessage';
-
-        $data = [
+        return $this->post('/deleteMessage', [
             'chat_id'    => $this->chat_id,
             'message_id' => $this->message_id,
-        ];
-
-        return $this->post($method, $data);
+        ]);
     }
 }
