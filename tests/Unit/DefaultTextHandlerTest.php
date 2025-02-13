@@ -31,7 +31,7 @@ class DefaultTextHandlerTest extends TestCase
             'chat' => [
                 'id' => 1,
             ],
-            'message_id' => 1
+            'message_id' => 1,
         ]));
         $this->assertTrue(true);
     }

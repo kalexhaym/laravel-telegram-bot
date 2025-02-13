@@ -30,7 +30,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type' => 'bot_command',
                 ],
@@ -47,7 +47,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type' => 'text',
                 ],
@@ -64,7 +64,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type' => 'text',
                 ],
@@ -103,7 +103,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type'   => 'bot_command',
                     'offset' => 0,
@@ -123,7 +123,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type' => 'text',
                 ],
@@ -143,7 +143,7 @@ class MessageTest extends TestCase
                 'id' => 1,
             ],
             'message_id' => 1,
-            'entities' => [
+            'entities'   => [
                 [
                     'type' => 'text',
                 ],
