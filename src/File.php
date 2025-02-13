@@ -9,35 +9,44 @@ abstract class File
     /**
      * @var string
      */
+    protected string $name = 'file';
+
+    /**
+     * @var string
+     */
     private string $path;
-    /**
-     * @var string
-     */
-    private string $disk = 'local';
 
     /**
      * @var string
      */
-    protected string $name;
+    private string $disk;
 
     /**
-     * @param $path
+     * @var string
      */
-    public function __construct($path)
+    private string $filename;
+
+    /**
+     * @var string
+     */
+    private string $contents;
+
+    /**
+     * @var array
+     */
+    private array $headers;
+
+    /**
+     * @param string $path
+     * @param string $disk
+     */
+    public function __construct(string $path, string $disk = 'local')
     {
         $this->path = $path;
-    }
-
-    /**
-     * @param string $disk
-     *
-     * @return $this
-     */
-    public function disk(string $disk): static
-    {
         $this->disk = $disk;
-
-        return $this;
+        $this->filename = basename(Storage::disk($this->disk)->path($this->path));
+        $this->contents = Storage::disk($this->disk)->get($this->path);
+        $this->headers = ['Content-Type' => Storage::disk($this->disk)->mimeType($this->path)];
     }
 
     /**
@@ -47,9 +56,9 @@ abstract class File
     {
         return [
             'name'     => $this->name,
-            'contents' => Storage::disk($this->disk)->get($this->path),
-            'filename' => basename(Storage::disk($this->disk)->path($this->path)),
-            'headers'  => ['Content-Type' => Storage::disk($this->disk)->mimeType($this->path)],
+            'filename' => $this->filename,
+            'contents' => $this->contents,
+            'headers'  => $this->headers,
         ];
     }
 }

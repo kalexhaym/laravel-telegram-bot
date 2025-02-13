@@ -130,22 +130,21 @@ class Message
     }
 
     /**
-     * @param string $audio
-     * @param null   $caption
-     * @param array  $reply_markup
-     * @param bool   $disable_notification
+     * @param string|Audio $audio
+     * @param null         $caption
+     * @param array        $reply_markup
+     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendAudio(string $audio, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendAudio(string|Audio $audio, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendAudio';
 
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
-            'audio'                => $audio,
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
         ];
@@ -154,7 +153,13 @@ class Message
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($method, $data);
+        if ($audio instanceof Audio) {
+            return $this->post($method, $data, $audio->get());
+        } else {
+            $data['audio'] = $audio;
+
+            return $this->post($method, $data);
+        }
     }
 
     /**
