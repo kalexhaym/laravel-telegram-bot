@@ -235,10 +235,10 @@ class MessageTest extends TestCase
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
-                    'photo'                => 'Test Photo',
                     'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
+                    'photo'                => 'Test Photo',
                 ];
         });
     }
@@ -271,10 +271,10 @@ class MessageTest extends TestCase
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
-                    'audio'                => 'Test Audio',
                     'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
+                    'audio'                => 'Test Audio',
                 ];
         });
     }
@@ -307,10 +307,46 @@ class MessageTest extends TestCase
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
-                    'document'             => 'Test Document',
                     'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
+                    'document'             => 'Test Document',
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSendVideo(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendVideo' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+
+        $response = $class->sendVideo('Test Video', 'Test Caption', $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($reply_markup) {
+            return $request->url() === $this->testUrl.'/sendVideo' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'caption'              => 'Test Caption',
+                    'disable_notification' => true,
+                    'reply_markup'         => json_encode($reply_markup),
+                    'video'             => 'Test Video',
                 ];
         });
     }

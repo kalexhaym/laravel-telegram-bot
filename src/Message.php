@@ -196,6 +196,39 @@ class Message
     }
 
     /**
+     * @param string|Video $document
+     * @param string|null     $caption
+     * @param array           $reply_markup
+     * @param bool            $disable_notification
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendVideo(string|Video $video, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    {
+        $method = '/sendVideo';
+
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
+        ];
+
+        if (! empty($reply_markup)) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        if ($video instanceof Video) {
+            return $this->post($method, $data, $video->get());
+        } else {
+            $data['video'] = $video;
+
+            return $this->post($method, $data);
+        }
+    }
+
+    /**
      * @param string $text
      *
      * @throws ConnectionException
