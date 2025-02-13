@@ -216,7 +216,7 @@ class TelegramTest extends TestCase
 //    }
 
     /**
-     * @throws ConnectionException
+     * @throws ConnectionException|ReflectionException
      */
     public function testProcessUpdate(): void
     {
