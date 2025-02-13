@@ -229,6 +229,62 @@ class Message
     }
 
     /**
+     * @param string $title
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function setChatTitle(string $title): array
+    {
+        $method = '/setChatTitle';
+
+        $data = [
+            'chat_id' => $this->chat_id,
+            'title'   => $title,
+        ];
+
+        return $this->post($method, $data);
+    }
+
+    /**
+     * @param string $description
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function setChatDescription(string $description): array
+    {
+        $method = '/setChatDescription';
+
+        $data = [
+            'chat_id' => $this->chat_id,
+            'description'   => $description,
+        ];
+
+        return $this->post($method, $data);
+    }
+
+    /**
+     * @param int $callback_query_id
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function answerCallbackQuery(int $callback_query_id): array
+    {
+        $method = '/answerCallbackQuery';
+
+        $data = [
+            'callback_query_id' => $callback_query_id,
+        ];
+
+        return $this->post($method, $data);
+    }
+
+    /**
      * @param string $text
      *
      * @throws ConnectionException
@@ -284,24 +340,6 @@ class Message
         $data = [
             'chat_id'    => $this->chat_id,
             'message_id' => $this->message_id,
-        ];
-
-        return $this->post($method, $data);
-    }
-
-    /**
-     * @param int $callback_query_id
-     *
-     * @throws ConnectionException
-     *
-     * @return array
-     */
-    public function answerCallbackQuery(int $callback_query_id): array
-    {
-        $method = '/answerCallbackQuery';
-
-        $data = [
-            'callback_query_id' => $callback_query_id,
         ];
 
         return $this->post($method, $data);

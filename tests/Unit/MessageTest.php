@@ -354,6 +354,98 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
+    public function testSetChatTitle(): void
+    {
+        Http::fake([
+            $this->testUrl.'/setChatTitle' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->setChatTitle('Test Title');
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/setChatTitle' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'=> 1,
+                    'title'=> 'Test Title',
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSetChatDescription(): void
+    {
+        Http::fake([
+            $this->testUrl.'/setChatDescription' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->setChatDescription('Test Description');
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/setChatDescription' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'=> 1,
+                    'description'=> 'Test Description',
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testAnswerCallbackQuery(): void
+    {
+        Http::fake([
+            $this->testUrl.'/answerCallbackQuery' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->answerCallbackQuery(1);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/answerCallbackQuery' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'callback_query_id' => 1,
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
     public function testEditMessageText(): void
     {
         Http::fake([
@@ -444,36 +536,6 @@ class MessageTest extends TestCase
                 $request->data() === [
                     'chat_id'    => 1,
                     'message_id' => 1,
-                ];
-        });
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function testAnswerCallbackQuery(): void
-    {
-        Http::fake([
-            $this->testUrl.'/answerCallbackQuery' => Http::response(['success' => true], 200),
-        ]);
-
-        $class = new Message([
-            'chat' => [
-                'id' => 1,
-            ],
-            'message_id' => 1,
-        ]);
-
-        $response = $class->answerCallbackQuery(1);
-
-        $this->assertArrayHasKey('data', $response);
-        $this->assertEquals(['success' => true], $response['data']);
-
-        Http::assertSent(function (Request $request) {
-            return $request->url() === $this->testUrl.'/answerCallbackQuery' &&
-                $request->method() === 'POST' &&
-                $request->data() === [
-                    'callback_query_id' => 1,
                 ];
         });
     }
