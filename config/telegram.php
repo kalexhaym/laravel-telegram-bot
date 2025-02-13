@@ -4,17 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Api Configuration
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    'api' => [
-        'url' => env('TELEGRAM_API_URL', 'https://api.telegram.org/bot'),
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Bot Configuration
     |--------------------------------------------------------------------------
     |
@@ -27,6 +16,36 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Commands List
+    |--------------------------------------------------------------------------
+    */
+
+    'commands' => [
+        \App\Telegram\StartCommand::class,
+
+        \Kalexhaym\LaravelTelegramBot\Commands\MyChatIDCommand::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Callbacks List
+    |--------------------------------------------------------------------------
+    */
+
+    'callbacks' => [
+        \App\Telegram\StartCallback::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Text Handler
+    |--------------------------------------------------------------------------
+    */
+
+    'text-handler' => Kalexhaym\LaravelTelegramBot\DefaultTextHandler::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Long Polling Configuration
     |--------------------------------------------------------------------------
     */
@@ -35,6 +54,19 @@ return [
         'sleep'   => env('TELEGRAM_POLL_SLEEP', 2),
         'limit'   => env('TELEGRAM_POLL_LIMIT', 100),
         'timeout' => env('TELEGRAM_POLL_TIMEOUT', 50),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hook Configuration
+    |--------------------------------------------------------------------------
+    */
+
+    'hook' => [
+        // It is used in this form /{hook.uri}/{bot.token}
+        'uri'          => env('TELEGRAM_HOOK_URI', 'telegram-hook'),
+
+        'route-name'   => env('TELEGRAM_HOOK_ROUTE_NAME', 'telegram-hook'),
     ],
 
     /*
@@ -62,20 +94,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Commands List
+    | Api Configuration
     |--------------------------------------------------------------------------
+    |
     */
 
-    'commands' => [
-        \App\Telegram\StartCommand::class,
-
-        \Kalexhaym\LaravelTelegramBot\Commands\MyChatIDCommand::class,
+    'api' => [
+        'url' => env('TELEGRAM_API_URL', 'https://api.telegram.org/bot'),
     ],
-
-    'callbacks' => [
-        \App\Telegram\StartCallback::class,
-    ],
-
-    'text-handler' => Kalexhaym\LaravelTelegramBot\DefaultTextHandler::class,
 
 ];

@@ -116,7 +116,7 @@ class Telegram
         $method = '/setWebhook';
 
         return $this->post($method, [
-            'url' => route('telegram-hook'),
+            'url' => route(config('telegram.hook.route-name')),
         ]);
     }
 

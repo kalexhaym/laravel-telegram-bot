@@ -3,6 +3,7 @@
 namespace Kalexhaym\LaravelTelegramBot\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Kalexhaym\LaravelTelegramBot\Telegram;
 
 /**
@@ -26,6 +27,8 @@ class SetHook extends Command
 
     /**
      * Execute the console command.
+     *
+     * @throws ConnectionException
      *
      * @return void
      */
