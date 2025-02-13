@@ -175,7 +175,7 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
-    public function testSendText(): void
+    public function testSendMessage(): void
     {
         Http::fake([
             $this->testUrl.'/sendMessage' => Http::response(['success' => true], 200),
@@ -201,42 +201,6 @@ class MessageTest extends TestCase
                 $request->data() === [
                     'chat_id'              => 1,
                     'text'                 => 'Test Text',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
-                ];
-        });
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function testSendDocument(): void
-    {
-        Http::fake([
-            $this->testUrl.'/sendDocument' => Http::response(['success' => true], 200),
-        ]);
-
-        $class = new Message([
-            'chat' => [
-                'id' => 1,
-            ],
-            'message_id' => 1,
-        ]);
-
-        $reply_markup = ['markup'];
-
-        $response = $class->sendDocument('Test Document', 'Test Caption', $reply_markup, true);
-
-        $this->assertArrayHasKey('data', $response);
-        $this->assertEquals(['success' => true], $response['data']);
-
-        Http::assertSent(function (Request $request) use ($reply_markup) {
-            return $request->url() === $this->testUrl.'/sendDocument' &&
-                $request->method() === 'POST' &&
-                $request->data() === [
-                    'chat_id'              => 1,
-                    'document'             => 'Test Document',
-                    'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
                 ];
@@ -272,6 +236,78 @@ class MessageTest extends TestCase
                 $request->data() === [
                     'chat_id'              => 1,
                     'photo'                => 'Test Photo',
+                    'caption'              => 'Test Caption',
+                    'disable_notification' => true,
+                    'reply_markup'         => json_encode($reply_markup),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSendAudio(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendAudio' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+
+        $response = $class->sendAudio('Test Audio', 'Test Caption', $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($reply_markup) {
+            return $request->url() === $this->testUrl.'/sendAudio' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'audio'                => 'Test Audio',
+                    'caption'              => 'Test Caption',
+                    'disable_notification' => true,
+                    'reply_markup'         => json_encode($reply_markup),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSendDocument(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendDocument' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+
+        $response = $class->sendDocument('Test Document', 'Test Caption', $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($reply_markup) {
+            return $request->url() === $this->testUrl.'/sendDocument' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'document'             => 'Test Document',
                     'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),

@@ -125,6 +125,34 @@ class Message
     }
 
     /**
+     * @param string $audio
+     * @param null   $caption
+     * @param array  $reply_markup
+     * @param bool   $disable_notification
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendAudio(string $audio, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    {
+        $method = '/sendAudio';
+
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            'audio'                => $audio,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
+        ];
+
+        if ($reply_markup) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        return $this->post($method, $data);
+    }
+
+    /**
      * @param string $document
      * @param null   $caption
      * @param array  $reply_markup
