@@ -43,7 +43,7 @@ trait Requests
         $request = Http::timeout($timeout)
             ->withHeaders($headers);
 
-        if (!empty($attachment)) {
+        if (! empty($attachment)) {
             $request->attach(
                 $attachment['name'],
                 $attachment['contents'],

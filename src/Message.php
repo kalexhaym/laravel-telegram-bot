@@ -3,7 +3,6 @@
 namespace Kalexhaym\LaravelTelegramBot;
 
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Str;
 use Kalexhaym\LaravelTelegramBot\Traits\Requests;
 
 class Message
@@ -98,16 +97,16 @@ class Message
     }
 
     /**
-     * @param string $photo
-     * @param null   $caption
-     * @param array  $reply_markup
-     * @param bool   $disable_notification
+     * @param string|Photo $photo
+     * @param null         $caption
+     * @param array        $reply_markup
+     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendPhoto(string $photo, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendPhoto(string|Photo $photo, $caption = null, array $reply_markup = [], bool $disable_notification = false): array
     {
         $method = '/sendPhoto';
 
@@ -116,23 +115,18 @@ class Message
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
         ];
-        $attachment = [];
-
-        if (Str::isUrl($photo)) {
-            $data['photo'] = $photo;
-        } else {
-            $attachment = [
-                'name' => 'photo',
-                'contents' => $photo,
-                'filename' => 'photo.jpg'
-            ];
-        }
 
         if ($reply_markup) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($method, $data, $attachment);
+        if ($photo instanceof Photo) {
+            return $this->post($method, $data, $photo->get());
+        } else {
+            $data['photo'] = $photo;
+
+            return $this->post($method, $data);
+        }
     }
 
     /**
