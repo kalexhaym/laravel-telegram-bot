@@ -120,11 +120,12 @@ class TelegramTest extends TestCase
         $this->assertInstanceOf(TextHandler::class, $result);
 
         $this->app['config']->set('telegram.text-handler', TestTextHandler::class);
+        $result = $method->invokeArgs($class, []);
         $this->assertInstanceOf(TextHandler::class, $result);
 
         $this->app['config']->set('telegram.text-handler', TestCommand::class);
         $this->expectException(TextHandlerException::class);
-        new Telegram();
+        $method->invokeArgs($class, []);
     }
 
     /**
