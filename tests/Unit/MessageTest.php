@@ -346,7 +346,7 @@ class MessageTest extends TestCase
                     'caption'              => 'Test Caption',
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
-                    'video'             => 'Test Video',
+                    'video'                => 'Test Video',
                 ];
         });
     }

@@ -196,10 +196,10 @@ class Message
     }
 
     /**
-     * @param string|Video $document
-     * @param string|null     $caption
-     * @param array           $reply_markup
-     * @param bool            $disable_notification
+     * @param string|Video $video
+     * @param string|null  $caption
+     * @param array        $reply_markup
+     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
