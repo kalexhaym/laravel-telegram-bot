@@ -212,10 +212,10 @@ class TelegramTest extends TestCase
         });
     }
 
-//    public function testPollUpdates(): void
-//    {
-//
-//    }
+    //    public function testPollUpdates(): void
+    //    {
+    //
+    //    }
 
     /**
      * @throws ConnectionException|ReflectionException
@@ -243,9 +243,9 @@ class TelegramTest extends TestCase
                     'id' => 1,
                 ],
                 'message_id' => 1,
-                'entities' => [
+                'entities'   => [
                     [
-                        'type' => 'bot_command',
+                        'type'   => 'bot_command',
                         'offset' => 1,
                         'length' => 1,
                     ],
