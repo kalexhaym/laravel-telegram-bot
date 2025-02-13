@@ -258,6 +258,43 @@ class TelegramTest extends TestCase
         ]]);
         $this->assertTrue(true);
 
+        $this->app['config']->set('telegram.commands', [
+            TestCommand::class,
+        ]);
+        $this->app['config']->set('telegram.callbacks', [
+            TestCallback::class,
+        ]);
+
+        $method->invokeArgs($class, ['update' => [
+            'callback_query' => [
+                'message' => [
+                    'chat' => [
+                        'id' => 1,
+                    ],
+                    'message_id' => 1,
+                ],
+                'data' => 'callback=test-callback',
+            ],
+            'message' => [
+                'chat' => [
+                    'id' => 1,
+                ],
+                'message_id' => 1,
+                'entities'   => [
+                    [
+                        'type'   => 'bot_command',
+                        'offset' => 0,
+                        'length' => 12,
+                    ],
+                    [
+                        'type' => 'text',
+                    ],
+                ],
+                'text' => 'test-command',
+            ],
+        ]]);
+        $this->assertTrue(true);
+
         $method->invokeArgs($class, ['update' => [
             'message' => [
                 'chat' => [
