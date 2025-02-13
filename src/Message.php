@@ -164,9 +164,9 @@ class Message
 
     /**
      * @param string|Document $document
-     * @param null   $caption
-     * @param array  $reply_markup
-     * @param bool   $disable_notification
+     * @param null            $caption
+     * @param array           $reply_markup
+     * @param bool            $disable_notification
      *
      * @throws ConnectionException
      *
