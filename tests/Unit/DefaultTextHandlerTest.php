@@ -3,7 +3,7 @@
 namespace Unit;
 
 use Kalexhaym\LaravelTelegramBot\DefaultTextHandler;
-use Kalexhaym\LaravelTelegramBot\Telegram;
+use Kalexhaym\LaravelTelegramBot\Message;
 use Kalexhaym\LaravelTelegramBot\TextHandler;
 use Orchestra\Testbench\TestCase;
 
@@ -27,7 +27,12 @@ class DefaultTextHandlerTest extends TestCase
         $this->app['config']->set('telegram.callbacks', []);
 
         $handler = new DefaultTextHandler();
-        $handler->execute([], new Telegram());
+        $handler->execute(new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1
+        ]));
         $this->assertTrue(true);
     }
 }

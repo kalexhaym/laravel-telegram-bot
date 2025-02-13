@@ -28,7 +28,7 @@ trait Requests
     }
 
     /**
-     * @param string $url
+     * @param string $method
      * @param array  $data
      * @param array  $headers
      * @param int    $timeout
@@ -37,17 +37,17 @@ trait Requests
      *
      * @return array
      */
-    public function post(string $url, array $data, array $headers = [], int $timeout = 30): array
+    public function post(string $method, array $data, array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
                 ->withHeaders($headers)
-                ->post($url, $data)
+                ->post(config('telegram.api.url').config('telegram.bot.token').$method, $data)
         );
     }
 
     /**
-     * @param string $url
+     * @param string $method
      * @param array  $query
      * @param array  $headers
      * @param int    $timeout
@@ -56,17 +56,17 @@ trait Requests
      *
      * @return array
      */
-    public function get(string $url, array $query = [], array $headers = [], int $timeout = 30): array
+    public function get(string $method, array $query = [], array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
                 ->withHeaders($headers)
-                ->get($url, $query)
+                ->get(config('telegram.api.url').config('telegram.bot.token').$method, $query)
         );
     }
 
     /**
-     * @param string $url
+     * @param string $method
      * @param array  $data
      * @param array  $headers
      * @param int    $timeout
@@ -75,17 +75,17 @@ trait Requests
      *
      * @return array
      */
-    public function put(string $url, array $data, array $headers = [], int $timeout = 30): array
+    public function put(string $method, array $data, array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
                 ->withHeaders($headers)
-                ->put($url, $data)
+                ->put(config('telegram.api.url').config('telegram.bot.token').$method, $data)
         );
     }
 
     /**
-     * @param string $url
+     * @param string $method
      * @param array  $data
      * @param array  $headers
      * @param int    $timeout
@@ -94,12 +94,12 @@ trait Requests
      *
      * @return array
      */
-    public function delete(string $url, array $data, array $headers = [], int $timeout = 30): array
+    public function delete(string $method, array $data, array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
                 ->withHeaders($headers)
-                ->delete($url, $data)
+                ->delete(config('telegram.api.url').config('telegram.bot.token').$method, $data)
         );
     }
 }

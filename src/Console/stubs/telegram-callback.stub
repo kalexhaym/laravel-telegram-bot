@@ -2,8 +2,9 @@
 
 namespace {{ namespace }};
 
+use Illuminate\Http\Client\ConnectionException;
 use Kalexhaym\LaravelTelegramBot\Callback;
-use Kalexhaym\LaravelTelegramBot\Telegram;
+use Kalexhaym\LaravelTelegramBot\Message;
 
 class {{ class }} extends Callback
 {
@@ -13,14 +14,15 @@ class {{ class }} extends Callback
     public string $callback = 'callback';
 
     /**
-     * @param array $message
-     * @param Telegram $telegram
+     * @param Message $message
      * @param array $params
      *
      * @return void
+     *
+     * @throws ConnectionException
      */
-    public function execute(array $message, Telegram $telegram, array $params = []): void
+    public function execute(Message $message, array $params = []): void
     {
-        $telegram->sendMessage($message['chat']['id'], 'If you receive this message, then everything is working!');
+        $message->sendText('If you receive this message, then everything is working!');
     }
 }

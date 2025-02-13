@@ -2,16 +2,15 @@
 
 namespace Kalexhaym\LaravelTelegramBot\Interfaces;
 
-use Kalexhaym\LaravelTelegramBot\Telegram;
+use Kalexhaym\LaravelTelegramBot\Message;
 
 interface ExecutableCallback
 {
     /**
-     * @param array    $message
-     * @param Telegram $telegram
-     * @param array    $params
+     * @param Message $message
+     * @param array   $params
      *
      * @return void
      */
-    public function execute(array $message, Telegram $telegram, array $params = []): void;
+    public function execute(Message $message, array $params = []): void;
 }
