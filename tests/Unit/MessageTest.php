@@ -376,8 +376,8 @@ class MessageTest extends TestCase
             return $request->url() === $this->testUrl.'/setChatTitle' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
-                    'chat_id'=> 1,
-                    'title'=> 'Test Title',
+                    'chat_id' => 1,
+                    'title'   => 'Test Title',
                 ];
         });
     }
@@ -407,8 +407,8 @@ class MessageTest extends TestCase
             return $request->url() === $this->testUrl.'/setChatDescription' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
-                    'chat_id'=> 1,
-                    'description'=> 'Test Description',
+                    'chat_id'     => 1,
+                    'description' => 'Test Description',
                 ];
         });
     }

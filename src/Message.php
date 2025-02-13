@@ -259,7 +259,7 @@ class Message
         $method = '/setChatDescription';
 
         $data = [
-            'chat_id' => $this->chat_id,
+            'chat_id'       => $this->chat_id,
             'description'   => $description,
         ];
 
