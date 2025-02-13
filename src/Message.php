@@ -3,6 +3,7 @@
 namespace Kalexhaym\LaravelTelegramBot;
 
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Str;
 use Kalexhaym\LaravelTelegramBot\Traits\Requests;
 
 class Message
@@ -112,16 +113,26 @@ class Message
 
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
-            'photo'                => $photo,
             'caption'              => $caption,
             'disable_notification' => $disable_notification,
         ];
+        $attachment = [];
+
+        if (Str::isUrl($photo)) {
+            $data['photo'] = $photo;
+        } else {
+            $attachment = [
+                'name' => 'photo',
+                'contents' => $photo,
+                'filename' => 'photo.jpg'
+            ];
+        }
 
         if ($reply_markup) {
             $data['reply_markup'] = json_encode($reply_markup);
         }
 
-        return $this->post($method, $data);
+        return $this->post($method, $data, $attachment);
     }
 
     /**

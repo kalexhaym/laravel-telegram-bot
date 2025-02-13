@@ -20,7 +20,7 @@ trait Requests
             'data' => json_decode($response->getBody(), true),
         ];
 
-        if (config('telegram.http.debug')) {
+        if (config('telegram.debug.http')) {
             Log::debug(json_encode($result));
         }
 
@@ -30,6 +30,7 @@ trait Requests
     /**
      * @param string $method
      * @param array  $data
+     * @param array  $attachment
      * @param array  $headers
      * @param int    $timeout
      *
@@ -37,12 +38,22 @@ trait Requests
      *
      * @return array
      */
-    public function post(string $method, array $data, array $headers = [], int $timeout = 30): array
+    public function post(string $method, array $data, array $attachment = [], array $headers = [], int $timeout = 30): array
     {
+        $request = Http::timeout($timeout)
+            ->withHeaders($headers);
+
+        if (!empty($attachment)) {
+            $request->attach(
+                $attachment['name'],
+                $attachment['contents'],
+                $attachment['filename'],
+                $attachment['headers'] ?? []
+            );
+        }
+
         return $this->result(
-            Http::timeout($timeout)
-                ->withHeaders($headers)
-                ->post(config('telegram.api.url').config('telegram.bot.token').$method, $data)
+            $request->post(config('telegram.api.url').config('telegram.bot.token').$method, $data)
         );
     }
 
