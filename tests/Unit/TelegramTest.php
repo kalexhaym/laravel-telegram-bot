@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Kalexhaym\LaravelTelegramBot\Callback;
 use Kalexhaym\LaravelTelegramBot\Command;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
@@ -22,6 +26,18 @@ use ReflectionMethod;
  */
 class TelegramTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    private string $testUrl = 'https://api.example.com';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('telegram.api.url', $this->testUrl);
+    }
+
     /**
      * @throws ReflectionException
      */
@@ -109,6 +125,135 @@ class TelegramTest extends TestCase
         $this->app['config']->set('telegram.text-handler', TestCommand::class);
         $this->expectException(TextHandlerException::class);
         new Telegram();
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSetWebhook(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+        $this->app['config']->set('telegram.hook.route-name', 'telegram-hook');
+
+        Route::get('/test-telegram-hook', function () {
+            response();
+        })->name('telegram-hook');
+
+        $this->get('/test-telegram-hook')
+            ->assertStatus(200);
+
+        Http::fake([
+            $this->testUrl.'/setWebhook' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Telegram();
+
+        $response = $class->setWebhook();
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/setWebhook' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'url' => route('telegram-hook'),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testHook(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+
+        $request = \Illuminate\Http\Request::create('/some-url', 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], json_encode(['key' => 'value']));
+
+        $class = new Telegram();
+        $class->hook($request);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testGetUpdates(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+        $this->app['config']->set('telegram.poll.limit', 100);
+        $this->app['config']->set('telegram.poll.timeout', 50);
+
+        Http::fake([
+            $this->testUrl.'/getUpdates' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Telegram();
+
+        $response = $class->getUpdates();
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/getUpdates' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'offset'  => 1,
+                    'limit'   => config('telegram.poll.limit', 100),
+                    'timeout' => config('telegram.poll.timeout', 50),
+                ];
+        });
+    }
+
+//    public function testPollUpdates(): void
+//    {
+//
+//    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testProcessUpdate(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+
+        $method = self::getMethod('processUpdate');
+        $class = new Telegram();
+        $method->invokeArgs($class, ['update' => [
+            'callback_query' => [
+                'message' => [
+                    'chat' => [
+                        'id' => 1,
+                    ],
+                    'message_id' => 1,
+                ],
+                'data' => 'callback=test',
+            ],
+            'message' => [
+                'chat' => [
+                    'id' => 1,
+                ],
+                'message_id' => 1,
+                'entities' => [
+                    [
+                        'type' => 'bot_command',
+                        'offset' => 1,
+                        'length' => 1,
+                    ],
+                    [
+                        'type' => 'text',
+                    ],
+                ],
+                'text' => 'test',
+            ],
+        ]]);
+        $this->assertTrue(true);
     }
 }
 
