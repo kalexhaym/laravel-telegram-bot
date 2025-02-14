@@ -175,6 +175,34 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
+    public function testGetMe(): void
+    {
+        Http::fake([
+            $this->testUrl.'/getMe' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->getMe();
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/getMe' &&
+                $request->method() === 'GET' &&
+                $request->data() === [];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
     public function testSendMessage(): void
     {
         Http::fake([

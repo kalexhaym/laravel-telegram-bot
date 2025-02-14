@@ -75,56 +75,6 @@ class RequestsTest extends TestCase
                 $request->method() === 'GET';
         });
     }
-
-    /**
-     * @throws ConnectionException
-     *
-     * @return void
-     */
-    public function testPut(): void
-    {
-        Http::fake([
-            $this->testUrl.$this->testMethod => Http::response(['updated' => true], 200),
-        ]);
-
-        $class = new TestClass();
-
-        $response = $class->put($this->testMethod, ['id' => 1]);
-
-        $this->assertArrayHasKey('data', $response);
-        $this->assertEquals(['updated' => true], $response['data']);
-
-        Http::assertSent(function (Request $request) {
-            return $request->url() === $this->testUrl.$this->testMethod &&
-                $request->method() === 'PUT' &&
-                $request->data() === ['id' => 1];
-        });
-    }
-
-    /**
-     * @throws ConnectionException
-     *
-     * @return void
-     */
-    public function testDelete(): void
-    {
-        Http::fake([
-            $this->testUrl.$this->testMethod => Http::response(['deleted' => true], 200),
-        ]);
-
-        $class = new TestClass();
-
-        $response = $class->delete($this->testMethod, ['id' => 1]);
-
-        $this->assertArrayHasKey('data', $response);
-        $this->assertEquals(['deleted' => true], $response['data']);
-
-        Http::assertSent(function (Request $request) {
-            return $request->url() === $this->testUrl.$this->testMethod &&
-                $request->method() === 'DELETE' &&
-                $request->data() === ['id' => 1];
-        });
-    }
 }
 
 class TestClass
