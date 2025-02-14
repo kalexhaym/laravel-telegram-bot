@@ -324,7 +324,7 @@ class Message
     /**
      * Use this method to send a native poll. On success, the sent Message is returned.
      *
-     * @param Poll  $poll
+     * @param Poll $poll
      *
      * @throws ConnectionException
      *
