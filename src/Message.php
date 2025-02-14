@@ -85,7 +85,7 @@ class Message
      *
      * @return $this
      */
-    public function keyboard(Keyboard $keyboard): Message
+    public function setKeyboard(Keyboard $keyboard): Message
     {
         $this->keyboard = $keyboard->get();
 

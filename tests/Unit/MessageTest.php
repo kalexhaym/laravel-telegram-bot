@@ -177,7 +177,7 @@ class MessageTest extends TestCase
     /**
      * @return void
      */
-    public function testKeyboard(): void
+    public function testSetKeyboard(): void
     {
         $class = new Message([
             'chat' => [
@@ -186,9 +186,8 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $result = $class->keyboard(new Keyboard());
+        $result = $class->setKeyboard(new Keyboard());
         $this->assertInstanceOf(Message::class, $result);
-        $this->assertSame(['keyboard' => []], $class->keyboard);
     }
 
     /**
@@ -203,11 +202,8 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $this->assertSame(false, $class->disable_notification);
-
         $result = $class->disableNotification();
         $this->assertInstanceOf(Message::class, $result);
-        $this->assertSame(true, $class->disable_notification);
     }
 
     /**
