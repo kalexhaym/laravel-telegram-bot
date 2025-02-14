@@ -6,6 +6,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Kalexhaym\LaravelTelegramBot\File;
 
 trait Requests
 {
@@ -30,7 +31,7 @@ trait Requests
     /**
      * @param string $method
      * @param array  $data
-     * @param array  $attachment
+     * @param ?File  $attachment
      * @param array  $headers
      * @param int    $timeout
      *
@@ -38,12 +39,13 @@ trait Requests
      *
      * @return array
      */
-    public function post(string $method, array $data, array $attachment = [], array $headers = [], int $timeout = 30): array
+    public function post(string $method, array $data, ?File $attachment = null, array $headers = [], int $timeout = 30): array
     {
         $request = Http::timeout($timeout)
             ->withHeaders($headers);
 
         if (! empty($attachment)) {
+            $attachment = $attachment->get();
             $request->attach(
                 $attachment['name'],
                 $attachment['contents'],

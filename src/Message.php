@@ -14,7 +14,7 @@ class Message
     /**
      * @var array
      */
-    private array $data;
+    public array $data;
 
     /**
      * @var int
@@ -117,7 +117,7 @@ class Message
         }
 
         if ($photo instanceof Photo) {
-            return $this->post('/sendPhoto', $data, $photo->get());
+            return $this->post('/sendPhoto', $data, $photo);
         } else {
             $data['photo'] = $photo;
 
@@ -148,7 +148,7 @@ class Message
         }
 
         if ($audio instanceof Audio) {
-            return $this->post('/sendAudio', $data, $audio->get());
+            return $this->post('/sendAudio', $data, $audio);
         } else {
             $data['audio'] = $audio;
 
@@ -179,7 +179,7 @@ class Message
         }
 
         if ($document instanceof Document) {
-            return $this->post('/sendDocument', $data, $document->get());
+            return $this->post('/sendDocument', $data, $document);
         } else {
             $data['document'] = $document;
 
@@ -210,7 +210,7 @@ class Message
         }
 
         if ($video instanceof Video) {
-            return $this->post('/sendVideo', $data, $video->get());
+            return $this->post('/sendVideo', $data, $video);
         } else {
             $data['video'] = $video;
 
