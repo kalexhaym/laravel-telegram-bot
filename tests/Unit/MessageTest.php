@@ -440,6 +440,40 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
+    public function testSendVoice(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendVoice' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->setKeyboard(new Keyboard())->sendVoice('Test Voice', 'Test Caption');
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/sendVoice' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'caption'              => 'Test Caption',
+                    'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
+                    'voice'                => 'Test Voice',
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
     public function testSendLocation(): void
     {
         Http::fake([

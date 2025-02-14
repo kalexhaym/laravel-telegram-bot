@@ -296,6 +296,37 @@ class Message
     }
 
     /**
+     * Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS, or in .MP3 format, or in .M4A format (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * @param string|Voice $voice
+     * @param string|null  $caption
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendVoice(string|Voice $voice, ?string $caption = null): array
+    {
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            'caption'              => $caption,
+            'disable_notification' => $this->disable_notification,
+        ];
+
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
+        }
+
+        if ($voice instanceof Voice) {
+            return $this->post('/sendVoice', $data, $voice);
+        } else {
+            $data['voice'] = $voice;
+
+            return $this->post('/sendVoice', $data);
+        }
+    }
+
+    /**
      * Use this method to send point on the map. On success, the sent Message is returned.
      *
      * @param float $latitude
