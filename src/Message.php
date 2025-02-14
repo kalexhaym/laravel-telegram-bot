@@ -304,6 +304,32 @@ class Message
     }
 
     /**
+     * Use this method to send a native poll. On success, the sent Message is returned.
+     *
+     * @param Poll  $poll
+     * @param array $reply_markup
+     * @param bool  $disable_notification
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendPoll(Poll $poll, array $reply_markup = [], bool $disable_notification = false): array
+    {
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            ...$poll->get(),
+            'disable_notification' => $disable_notification,
+        ];
+
+        if (! empty($reply_markup)) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        return $this->post('/sendPoll', $data);
+    }
+
+    /**
      * Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
      *
      * @param string $title
