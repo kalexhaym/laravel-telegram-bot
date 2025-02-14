@@ -418,6 +418,42 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
+    public function testSendLocation(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendLocation' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+
+        $response = $class->sendLocation(0.1, 0.2, $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($reply_markup) {
+            return $request->url() === $this->testUrl.'/sendLocation' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'latitude'             => 0.1,
+                    'longitude'            => 0.2,
+                    'disable_notification' => true,
+                    'reply_markup'         => json_encode($reply_markup),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
     public function testSetChatTitle(): void
     {
         Http::fake([
