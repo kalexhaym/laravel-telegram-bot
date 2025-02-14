@@ -191,7 +191,8 @@ class Telegram
     {
         if (! empty($update['callback_query'])) {
             $callback_query = $update['callback_query'];
-            $message = new Message($callback_query['message']);
+            $message = new Message($callback_query['message']['chat']['id'], $callback_query['message']['message_id']);
+            $message->setData($callback_query['message']);
             $callback_data = explode(' ', $callback_query['data']);
 
             $params = [];
@@ -213,7 +214,8 @@ class Telegram
         }
 
         if (! empty($update['message'])) {
-            $message = new Message($update['message']);
+            $message = new Message($update['message']['chat']['id'], $update['message']['message_id']);
+            $message->setData($update['message']);
 
             if ($message->hasCommands()) {
                 foreach ($message->getCommands() as $command) {

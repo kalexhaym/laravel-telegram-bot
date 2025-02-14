@@ -42,7 +42,8 @@ class MessageTest extends TestCase
             TestCallback::class,
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -59,7 +60,8 @@ class MessageTest extends TestCase
         $result = $class->hasCommands();
         $this->assertSame(true, $result);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -76,7 +78,8 @@ class MessageTest extends TestCase
         $result = $class->hasCommands();
         $this->assertSame(true, $result);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -106,7 +109,8 @@ class MessageTest extends TestCase
             TestCallback::class,
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -115,7 +119,8 @@ class MessageTest extends TestCase
         $result = $class->getCommands();
         $this->assertSame([], $result);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -135,7 +140,8 @@ class MessageTest extends TestCase
         $result = $class->getCommands();
         $this->assertSame(['t'], $result);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -155,7 +161,8 @@ class MessageTest extends TestCase
         $result = $class->getCommands();
         $this->assertSame(['tex'], $result);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -179,7 +186,8 @@ class MessageTest extends TestCase
      */
     public function testSetKeyboard(): void
     {
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -195,7 +203,8 @@ class MessageTest extends TestCase
      */
     public function testDisableNotification(): void
     {
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -215,7 +224,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/getMe' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -243,7 +253,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendMessage' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -276,7 +287,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendPhoto' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -310,7 +322,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendAudio' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -344,7 +357,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendDocument' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -378,7 +392,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendVideo' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -412,7 +427,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendAnimation' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -446,7 +462,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendVoice' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -480,7 +497,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/banChatMember' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -513,7 +531,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/unbanChatMember' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -545,7 +564,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendLocation' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -579,7 +599,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/sendPoll' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -628,7 +649,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/setChatTitle' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -659,7 +681,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/setChatDescription' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -690,7 +713,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/answerCallbackQuery' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -720,7 +744,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageText' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -754,7 +779,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -786,7 +812,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
@@ -818,7 +845,8 @@ class MessageTest extends TestCase
             $this->testUrl.'/deleteMessage' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],

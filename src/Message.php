@@ -2,6 +2,7 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
+use Exception;
 use Illuminate\Http\Client\ConnectionException;
 use Kalexhaym\LaravelTelegramBot\Traits\Requests;
 
@@ -22,9 +23,9 @@ class Message
     public int $chat_id;
 
     /**
-     * @var int
+     * @var ?int
      */
-    public int $message_id;
+    public ?int $message_id = null;
 
     /**
      * @var array
@@ -42,14 +43,26 @@ class Message
     private bool $disable_notification = false;
 
     /**
-     * @param array $data
+     * @param int  $chat_id
+     * @param null $message_id
      */
-    public function __construct(array $data)
+    public function __construct(int $chat_id, $message_id = null)
+    {
+        $this->chat_id = $chat_id;
+        $this->message_id = $message_id;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Message
+     */
+    public function setData(array $data): Message
     {
         $this->data = $data;
-        $this->chat_id = $data['chat']['id'];
-        $this->message_id = $data['message_id'];
         $this->reply_markup = $data['reply_markup'] ?? [];
+
+        return $this;
     }
 
     /**
@@ -476,12 +489,17 @@ class Message
      *
      * @param string $text
      *
+     * @throws Exception
      * @throws ConnectionException
      *
      * @return array
      */
     public function editMessageText(string $text): array
     {
+        if (empty($this->message_id)) {
+            throw new Exception('You need to specify the message ID in the Message parameters to edit it.');
+        }
+
         $data = [
             'chat_id'    => $this->chat_id,
             'message_id' => $this->message_id,
@@ -500,12 +518,17 @@ class Message
      *
      * @param array $reply_markup
      *
+     * @throws Exception
      * @throws ConnectionException
      *
      * @return array
      */
     public function editMessageReplyMarkup(array $reply_markup = []): array
     {
+        if (empty($this->message_id)) {
+            throw new Exception('You need to specify the message ID in the Message parameters to edit it.');
+        }
+
         return $this->post('/editMessageReplyMarkup', [
             'chat_id'      => $this->chat_id,
             'message_id'   => $this->message_id,
@@ -516,12 +539,17 @@ class Message
     /**
      * @param Keyboard $keyboard
      *
+     * @throws Exception
      * @throws ConnectionException
      *
      * @return array
      */
     public function editMessageKeyboard(Keyboard $keyboard): array
     {
+        if (empty($this->message_id)) {
+            throw new Exception('You need to specify the message ID in the Message parameters to edit it.');
+        }
+
         return $this->post('/editMessageReplyMarkup', [
             'chat_id'      => $this->chat_id,
             'message_id'   => $this->message_id,
@@ -541,12 +569,17 @@ class Message
      * - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
      * Returns True on success.
      *
+     * @throws Exception
      * @throws ConnectionException
      *
      * @return array
      */
     public function deleteMessage(): array
     {
+        if (empty($this->message_id)) {
+            throw new Exception('You need to specify the message ID in the Message parameters to delete it.');
+        }
+
         return $this->post('/deleteMessage', [
             'chat_id'    => $this->chat_id,
             'message_id' => $this->message_id,

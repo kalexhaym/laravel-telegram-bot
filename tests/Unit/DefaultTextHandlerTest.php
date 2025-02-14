@@ -26,13 +26,15 @@ class DefaultTextHandlerTest extends TestCase
         $this->app['config']->set('telegram.commands', []);
         $this->app['config']->set('telegram.callbacks', []);
 
-        $handler = new DefaultTextHandler();
-        $handler->execute(new Message([
+        $class = new Message(1, 1);
+        $class->setData([
             'chat' => [
                 'id' => 1,
             ],
             'message_id' => 1,
-        ]));
+        ]);
+        $handler = new DefaultTextHandler();
+        $handler->execute($class);
         $this->assertTrue(true);
     }
 }
