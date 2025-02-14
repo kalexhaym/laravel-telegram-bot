@@ -515,7 +515,7 @@ class MessageTest extends TestCase
                     'explanation'             => 'explanation',
                     'open_period'             => 5,
                     'disable_notification'    => false,
-                    'reply_markup'         => json_encode(['keyboard' => []]),
+                    'reply_markup'            => json_encode(['keyboard' => []]),
                 ];
         });
     }
