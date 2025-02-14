@@ -515,7 +515,7 @@ class MessageTest extends TestCase
                     'explanation'             => 'explanation',
                     'open_period'             => 5,
                     'disable_notification'    => false,
-                    'reply_markup'         => json_encode(['keyboard' => []]),
+                    'reply_markup'            => json_encode(['keyboard' => []]),
                 ];
         });
     }
@@ -674,6 +674,38 @@ class MessageTest extends TestCase
                     'chat_id'      => 1,
                     'message_id'   => 1,
                     'reply_markup' => json_encode(['markup']),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testEditMessageKeyboard(): void
+    {
+        Http::fake([
+            $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->editMessageKeyboard(new Keyboard());
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/editMessageReplyMarkup' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'      => 1,
+                    'message_id'   => 1,
+                    'reply_markup' => json_encode(['keyboard' => []]),
                 ];
         });
     }

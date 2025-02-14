@@ -438,6 +438,22 @@ class Message
     }
 
     /**
+     * @param Keyboard $keyboard
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function editMessageKeyboard(Keyboard $keyboard): array
+    {
+        return $this->post('/editMessageReplyMarkup', [
+            'chat_id'      => $this->chat_id,
+            'message_id'   => $this->message_id,
+            'reply_markup' => json_encode($keyboard->get()),
+        ]);
+    }
+
+    /**
      * Use this method to delete a message, including service messages, with the following limitations:
      * - A message can only be deleted if it was sent less than 48 hours ago.
      * - Service messages about a supergroup, channel, or forum topic creation can't be deleted.
