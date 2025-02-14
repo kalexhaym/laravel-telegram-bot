@@ -487,7 +487,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->setKeyboard(new Keyboard())->banChatMember(1, true, 123);
+        $response = $class->banChatMember(1, true, 123);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -500,6 +500,38 @@ class MessageTest extends TestCase
                     'user_id'         => 1,
                     'revoke_messages' => true,
                     'until_date'      => 123,
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testUnbanChatMember(): void
+    {
+        Http::fake([
+            $this->testUrl.'/unbanChatMember' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $response = $class->unbanChatMember(1, false);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) {
+            return $request->url() === $this->testUrl.'/unbanChatMember' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'         => 1,
+                    'user_id'         => 1,
+                    'only_if_banned' => false,
                 ];
         });
     }
