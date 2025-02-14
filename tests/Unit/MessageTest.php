@@ -7,6 +7,7 @@ namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Kalexhaym\LaravelTelegramBot\Keyboard;
 use Kalexhaym\LaravelTelegramBot\Message;
 use Kalexhaym\LaravelTelegramBot\Poll;
 use Orchestra\Testbench\TestCase;
@@ -174,6 +175,42 @@ class MessageTest extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testKeyboard(): void
+    {
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $result = $class->keyboard(new Keyboard());
+        $this->assertInstanceOf(Message::class, $result);
+        $this->assertSame(['keyboard' => []], $class->keyboard);
+    }
+
+    /**
+     * @return void
+     */
+    public function testDisableNotification(): void
+    {
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $this->assertSame(false, $class->disable_notification);
+
+        $result = $class->disableNotification();
+        $this->assertInstanceOf(Message::class, $result);
+        $this->assertSame(true, $class->disable_notification);
+    }
+
+    /**
      * @throws ConnectionException
      */
     public function testGetMe(): void
@@ -217,21 +254,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendMessage('Test Text', $reply_markup, true);
+        $response = $class->sendMessage('Test Text');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendMessage' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'text'                 => 'Test Text',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                 ];
         });
     }
@@ -252,21 +286,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendPhoto('Test Photo', 'Test Caption', $reply_markup, true);
+        $response = $class->sendPhoto('Test Photo', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendPhoto' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                     'photo'                => 'Test Photo',
                 ];
         });
@@ -288,21 +319,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendAudio('Test Audio', 'Test Caption', $reply_markup, true);
+        $response = $class->sendAudio('Test Audio', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendAudio' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                     'audio'                => 'Test Audio',
                 ];
         });
@@ -324,21 +352,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendDocument('Test Document', 'Test Caption', $reply_markup, true);
+        $response = $class->sendDocument('Test Document', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendDocument' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                     'document'             => 'Test Document',
                 ];
         });
@@ -360,21 +385,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendVideo('Test Video', 'Test Caption', $reply_markup, true);
+        $response = $class->sendVideo('Test Video', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendVideo' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                     'video'                => 'Test Video',
                 ];
         });
@@ -396,21 +418,18 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendAnimation('Test Animation', 'Test Caption', $reply_markup, true);
+        $response = $class->sendAnimation('Test Animation', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendAnimation' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                     'animation'            => 'Test Animation',
                 ];
         });
@@ -432,22 +451,19 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
-
-        $response = $class->sendLocation(0.1, 0.2, $reply_markup, true);
+        $response = $class->sendLocation(0.1, 0.2);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($reply_markup) {
+        Http::assertSent(function (Request $request) {
             return $request->url() === $this->testUrl.'/sendLocation' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
                     'chat_id'              => 1,
                     'latitude'             => 0.1,
                     'longitude'            => 0.2,
-                    'disable_notification' => true,
-                    'reply_markup'         => json_encode($reply_markup),
+                    'disable_notification' => false,
                 ];
         });
     }
@@ -468,7 +484,6 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $reply_markup = ['markup'];
         $options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
         $poll = (new Poll('Test Question', $options))
@@ -477,12 +492,12 @@ class MessageTest extends TestCase
             ->quiz(2, 'explanation')
             ->openPeriod(5);
 
-        $response = $class->sendPoll($poll, $reply_markup, true);
+        $response = $class->sendPoll($poll);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
 
-        Http::assertSent(function (Request $request) use ($options, $reply_markup) {
+        Http::assertSent(function (Request $request) use ($options) {
             return $request->url() === $this->testUrl.'/sendPoll' &&
                 $request->method() === 'POST' &&
                 $request->data() === [
@@ -496,8 +511,7 @@ class MessageTest extends TestCase
                     'is_closed'               => false,
                     'explanation'             => 'explanation',
                     'open_period'             => 5,
-                    'disable_notification'    => true,
-                    'reply_markup'            => json_encode($reply_markup),
+                    'disable_notification'    => false,
                 ];
         });
     }

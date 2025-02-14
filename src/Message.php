@@ -32,6 +32,16 @@ class Message
     public array $reply_markup = [];
 
     /**
+     * @var array
+     */
+    public array $keyboard = [];
+
+    /**
+     * @var bool
+     */
+    public bool $disable_notification = false;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data)
@@ -71,6 +81,28 @@ class Message
     }
 
     /**
+     * @param Keyboard $keyboard
+     *
+     * @return $this
+     */
+    public function keyboard(Keyboard $keyboard): Message
+    {
+        $this->keyboard = $keyboard->get();
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableNotification(): Message
+    {
+        $this->disable_notification = true;
+
+        return $this;
+    }
+
+    /**
      * A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a User object.
      *
      * @throws ConnectionException
@@ -86,23 +118,21 @@ class Message
      * Use this method to send text messages. On success, the sent Message is returned.
      *
      * @param string $message
-     * @param array  $reply_markup
-     * @param bool   $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendMessage(string $message, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendMessage(string $message): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'text'                 => $message,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         return $this->post('/sendMessage', $data);
@@ -113,23 +143,21 @@ class Message
      *
      * @param string|Photo $photo
      * @param string|null  $caption
-     * @param array        $reply_markup
-     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendPhoto(string|Photo $photo, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendPhoto(string|Photo $photo, ?string $caption = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if ($reply_markup) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         if ($photo instanceof Photo) {
@@ -148,23 +176,21 @@ class Message
      *
      * @param string|Audio $audio
      * @param string|null  $caption
-     * @param array        $reply_markup
-     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendAudio(string|Audio $audio, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendAudio(string|Audio $audio, ?string $caption = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if ($reply_markup) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         if ($audio instanceof Audio) {
@@ -181,23 +207,21 @@ class Message
      *
      * @param string|Document $document
      * @param string|null     $caption
-     * @param array           $reply_markup
-     * @param bool            $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendDocument(string|Document $document, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendDocument(string|Document $document, ?string $caption = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         if ($document instanceof Document) {
@@ -214,23 +238,21 @@ class Message
      *
      * @param string|Video $video
      * @param string|null  $caption
-     * @param array        $reply_markup
-     * @param bool         $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendVideo(string|Video $video, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendVideo(string|Video $video, ?string $caption = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         if ($video instanceof Video) {
@@ -247,23 +269,21 @@ class Message
      *
      * @param string|Animation $animation
      * @param string|null      $caption
-     * @param array            $reply_markup
-     * @param bool             $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendAnimation(string|Animation $animation, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendAnimation(string|Animation $animation, ?string $caption = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         if ($animation instanceof Animation) {
@@ -280,24 +300,22 @@ class Message
      *
      * @param float $latitude
      * @param float $longitude
-     * @param array $reply_markup
-     * @param bool  $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendLocation(float $latitude, float $longitude, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendLocation(float $latitude, float $longitude): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'latitude'             => $latitude,
             'longitude'            => $longitude,
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         return $this->post('/sendLocation', $data);
@@ -307,23 +325,21 @@ class Message
      * Use this method to send a native poll. On success, the sent Message is returned.
      *
      * @param Poll  $poll
-     * @param array $reply_markup
-     * @param bool  $disable_notification
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendPoll(Poll $poll, array $reply_markup = [], bool $disable_notification = false): array
+    public function sendPoll(Poll $poll): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             ...$poll->get(),
-            'disable_notification' => $disable_notification,
+            'disable_notification' => $this->disable_notification,
         ];
 
-        if (! empty($reply_markup)) {
-            $data['reply_markup'] = json_encode($reply_markup);
+        if (! empty($this->keyboard)) {
+            $data['reply_markup'] = json_encode($this->keyboard);
         }
 
         return $this->post('/sendPoll', $data);

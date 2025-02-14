@@ -28,6 +28,6 @@ class {{ class }} extends Command
             ->resizable()
             ->addButton('Test Callback', 'callback');
 
-        $message->sendMessage('If you receive this message, then everything is working!', $keyboard->get());
+        $message->keyboard($keyboard)->sendMessage('If you receive this message, then everything is working!');
     }
 }
