@@ -1,7 +1,7 @@
 <p align="center">
-<a href="https://github.com/kalexhaym/laravel-telegram-bot/actions" target="_blank"><img src="https://github.com/kalexhaym/laravel-telegram-bot/workflows/Tests/badge.svg"></a>
-<a href="https://codecov.io/gh/kalexhaym/laravel-telegram-bot" target="_blank"><img src="https://codecov.io/gh/kalexhaym/laravel-telegram-bot/branch/master/graph/badge.svg" /></a>
-<a href="https://packagist.org/packages/kalexhaym/laravel-telegram-bot" target="_blank"><img alt="Packagist" src="https://img.shields.io/packagist/dt/kalexhaym/laravel-telegram-bot.svg"></a>
+<a href="https://github.com/kalexhaym/laravel-telegram-bot/actions"><img src="https://github.com/kalexhaym/laravel-telegram-bot/workflows/Tests/badge.svg"></a>
+<a href="https://codecov.io/gh/kalexhaym/laravel-telegram-bot"><img src="https://codecov.io/gh/kalexhaym/laravel-telegram-bot/branch/master/graph/badge.svg" /></a>
+<a href="https://packagist.org/packages/kalexhaym/laravel-telegram-bot"><img alt="Packagist" src="https://img.shields.io/packagist/dt/kalexhaym/laravel-telegram-bot.svg"></a>
 </p>
 
 # Installation
