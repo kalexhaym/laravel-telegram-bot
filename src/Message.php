@@ -243,6 +243,39 @@ class Message
     }
 
     /**
+     * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * @param string|Animation $animation
+     * @param string|null      $caption
+     * @param array            $reply_markup
+     * @param bool             $disable_notification
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function sendAnimation(string|Animation $animation, ?string $caption = null, array $reply_markup = [], bool $disable_notification = false): array
+    {
+        $data = [
+            'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
+            'caption'              => $caption,
+            'disable_notification' => $disable_notification,
+        ];
+
+        if (! empty($reply_markup)) {
+            $data['reply_markup'] = json_encode($reply_markup);
+        }
+
+        if ($animation instanceof Animation) {
+            return $this->post('/sendAnimation', $data, $animation);
+        } else {
+            $data['animation'] = $animation;
+
+            return $this->post('/sendAnimation', $data);
+        }
+    }
+
+    /**
      * Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
      *
      * @param string $title

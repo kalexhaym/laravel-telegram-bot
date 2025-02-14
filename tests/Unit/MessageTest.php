@@ -382,6 +382,42 @@ class MessageTest extends TestCase
     /**
      * @throws ConnectionException
      */
+    public function testSendAnimation(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendAnimation' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+
+        $response = $class->sendAnimation('Test Animation', 'Test Caption', $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($reply_markup) {
+            return $request->url() === $this->testUrl.'/sendAnimation' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'              => 1,
+                    'caption'              => 'Test Caption',
+                    'disable_notification' => true,
+                    'reply_markup'         => json_encode($reply_markup),
+                    'animation'            => 'Test Animation',
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
     public function testSetChatTitle(): void
     {
         Http::fake([
