@@ -250,7 +250,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendMessage('Test Text');
+        $response = $class->setKeyboard(new Keyboard())->sendMessage('Test Text');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -262,6 +262,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'text'                 => 'Test Text',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                 ];
         });
     }
@@ -282,7 +283,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendPhoto('Test Photo', 'Test Caption');
+        $response = $class->setKeyboard(new Keyboard())->sendPhoto('Test Photo', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -294,6 +295,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                     'photo'                => 'Test Photo',
                 ];
         });
@@ -315,7 +317,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendAudio('Test Audio', 'Test Caption');
+        $response = $class->setKeyboard(new Keyboard())->sendAudio('Test Audio', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -327,6 +329,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                     'audio'                => 'Test Audio',
                 ];
         });
@@ -348,7 +351,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendDocument('Test Document', 'Test Caption');
+        $response = $class->setKeyboard(new Keyboard())->sendDocument('Test Document', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -360,6 +363,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                     'document'             => 'Test Document',
                 ];
         });
@@ -381,7 +385,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendVideo('Test Video', 'Test Caption');
+        $response = $class->setKeyboard(new Keyboard())->sendVideo('Test Video', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -393,6 +397,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                     'video'                => 'Test Video',
                 ];
         });
@@ -414,7 +419,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendAnimation('Test Animation', 'Test Caption');
+        $response = $class->setKeyboard(new Keyboard())->sendAnimation('Test Animation', 'Test Caption');
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -426,6 +431,7 @@ class MessageTest extends TestCase
                     'chat_id'              => 1,
                     'caption'              => 'Test Caption',
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                     'animation'            => 'Test Animation',
                 ];
         });
@@ -447,7 +453,7 @@ class MessageTest extends TestCase
             'message_id' => 1,
         ]);
 
-        $response = $class->sendLocation(0.1, 0.2);
+        $response = $class->setKeyboard(new Keyboard())->sendLocation(0.1, 0.2);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -460,6 +466,7 @@ class MessageTest extends TestCase
                     'latitude'             => 0.1,
                     'longitude'            => 0.2,
                     'disable_notification' => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                 ];
         });
     }
@@ -488,7 +495,7 @@ class MessageTest extends TestCase
             ->quiz(2, 'explanation')
             ->openPeriod(5);
 
-        $response = $class->sendPoll($poll);
+        $response = $class->setKeyboard(new Keyboard())->sendPoll($poll);
 
         $this->assertArrayHasKey('data', $response);
         $this->assertEquals(['success' => true], $response['data']);
@@ -508,6 +515,7 @@ class MessageTest extends TestCase
                     'explanation'             => 'explanation',
                     'open_period'             => 5,
                     'disable_notification'    => false,
+                    'reply_markup'         => json_encode(['keyboard' => []]),
                 ];
         });
     }
