@@ -34,12 +34,12 @@ class Message
     /**
      * @var array
      */
-    public array $keyboard = [];
+    private array $keyboard = [];
 
     /**
      * @var bool
      */
-    public bool $disable_notification = false;
+    private bool $disable_notification = false;
 
     /**
      * @param array $data
