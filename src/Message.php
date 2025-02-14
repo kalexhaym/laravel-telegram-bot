@@ -71,6 +71,20 @@ class Message
     }
 
     /**
+     * A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a User object.
+     *
+     * @throws ConnectionException
+     *
+     * @return array
+     */
+    public function getMe(): array
+    {
+        return $this->get('/getMe');
+    }
+
+    /**
+     * Use this method to send text messages. On success, the sent Message is returned.
+     *
      * @param string $message
      * @param array  $reply_markup
      * @param bool   $disable_notification
@@ -95,6 +109,8 @@ class Message
     }
 
     /**
+     * Use this method to send photos. On success, the sent Message is returned.
+     *
      * @param string|Photo $photo
      * @param string|null  $caption
      * @param array        $reply_markup
@@ -126,6 +142,10 @@ class Message
     }
 
     /**
+     * Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * For sending voice messages, use the sendVoice method instead.
+     *
      * @param string|Audio $audio
      * @param string|null  $caption
      * @param array        $reply_markup
@@ -157,6 +177,8 @@ class Message
     }
 
     /**
+     * Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
+     *
      * @param string|Document $document
      * @param string|null     $caption
      * @param array           $reply_markup
@@ -188,6 +210,8 @@ class Message
     }
 
     /**
+     * Use this method to send video files, Telegram clients support MPEG4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+     *
      * @param string|Video $video
      * @param string|null  $caption
      * @param array        $reply_markup
@@ -219,6 +243,8 @@ class Message
     }
 
     /**
+     * Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
+     *
      * @param string $title
      *
      * @throws ConnectionException
@@ -234,6 +260,8 @@ class Message
     }
 
     /**
+     * Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
+     *
      * @param string $description
      *
      * @throws ConnectionException
@@ -249,6 +277,8 @@ class Message
     }
 
     /**
+     * Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
+     *
      * @param int $callback_query_id
      *
      * @throws ConnectionException
@@ -263,6 +293,8 @@ class Message
     }
 
     /**
+     * Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
+     *
      * @param string $text
      *
      * @throws ConnectionException
@@ -285,6 +317,8 @@ class Message
     }
 
     /**
+     * Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
+     *
      * @param array $reply_markup
      *
      * @throws ConnectionException
@@ -301,6 +335,17 @@ class Message
     }
 
     /**
+     * Use this method to delete a message, including service messages, with the following limitations:
+     * - A message can only be deleted if it was sent less than 48 hours ago.
+     * - Service messages about a supergroup, channel, or forum topic creation can't be deleted.
+     * - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
+     * - Bots can delete outgoing messages in private chats, groups, and supergroups.
+     * - Bots can delete incoming messages in private chats.
+     * - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+     * - If the bot is an administrator of a group, it can delete any message there.
+     * - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+     * Returns True on success.
+     *
      * @throws ConnectionException
      *
      * @return array

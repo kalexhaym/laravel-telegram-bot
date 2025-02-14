@@ -39,7 +39,7 @@ trait Requests
      *
      * @return array
      */
-    public function post(string $method, array $data, ?File $attachment = null, array $headers = [], int $timeout = 30): array
+    public function post(string $method, array $data = [], ?File $attachment = null, array $headers = [], int $timeout = 30): array
     {
         $request = Http::timeout($timeout)
             ->withHeaders($headers);
@@ -88,7 +88,7 @@ trait Requests
      *
      * @return array
      */
-    public function put(string $method, array $data, array $headers = [], int $timeout = 30): array
+    public function put(string $method, array $data = [], array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
@@ -107,7 +107,7 @@ trait Requests
      *
      * @return array
      */
-    public function delete(string $method, array $data, array $headers = [], int $timeout = 30): array
+    public function delete(string $method, array $data = [], array $headers = [], int $timeout = 30): array
     {
         return $this->result(
             Http::timeout($timeout)
