@@ -8,6 +8,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Kalexhaym\LaravelTelegramBot\Message;
+use Kalexhaym\LaravelTelegramBot\Poll;
 use Orchestra\Testbench\TestCase;
 use ReflectionException;
 
@@ -447,6 +448,56 @@ class MessageTest extends TestCase
                     'longitude'            => 0.2,
                     'disable_notification' => true,
                     'reply_markup'         => json_encode($reply_markup),
+                ];
+        });
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testSendPoll(): void
+    {
+        Http::fake([
+            $this->testUrl.'/sendPoll' => Http::response(['success' => true], 200),
+        ]);
+
+        $class = new Message([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id' => 1,
+        ]);
+
+        $reply_markup = ['markup'];
+        $options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+
+        $poll = (new Poll('Test Question', $options))
+            ->notAnonymous()
+            ->allowsMultipleAnswers()
+            ->quiz(2, 'explanation')
+            ->openPeriod(5);
+
+        $response = $class->sendPoll($poll, $reply_markup, true);
+
+        $this->assertArrayHasKey('data', $response);
+        $this->assertEquals(['success' => true], $response['data']);
+
+        Http::assertSent(function (Request $request) use ($options, $reply_markup) {
+            return $request->url() === $this->testUrl.'/sendPoll' &&
+                $request->method() === 'POST' &&
+                $request->data() === [
+                    'chat_id'                 => 1,
+                    'question'                => 'Test Question',
+                    'options'                 => json_encode($options),
+                    'type'                    => 'quiz',
+                    'allows_multiple_answers' => true,
+                    'correct_option_id'       => 2,
+                    'is_anonymous'            => false,
+                    'is_closed'               => false,
+                    'explanation'             => 'explanation',
+                    'open_period'             => 5,
+                    'disable_notification'    => true,
+                    'reply_markup'            => json_encode($reply_markup),
                 ];
         });
     }

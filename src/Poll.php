@@ -101,7 +101,7 @@ class Poll
      */
     public function openPeriod(int $open_period): Poll
     {
-        $this->open_period = true;
+        $this->open_period = $open_period;
 
         return $this;
     }
