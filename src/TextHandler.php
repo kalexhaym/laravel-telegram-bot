@@ -2,6 +2,6 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-use Kalexhaym\LaravelTelegramBot\Interfaces\Executable;
+use Kalexhaym\LaravelTelegramBot\Interfaces\TextHandlerInterface;
 
-abstract class TextHandler implements Executable {}
+abstract class TextHandler implements TextHandlerInterface {}

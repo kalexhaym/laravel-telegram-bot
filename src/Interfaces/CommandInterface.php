@@ -4,7 +4,7 @@ namespace Kalexhaym\LaravelTelegramBot\Interfaces;
 
 use Kalexhaym\LaravelTelegramBot\Message;
 
-interface ExecutableCommand
+interface CommandInterface
 {
     /**
      * @param Message $message

@@ -2,9 +2,9 @@
 
 namespace Kalexhaym\LaravelTelegramBot;
 
-use Kalexhaym\LaravelTelegramBot\Interfaces\ExecutableCallback;
+use Kalexhaym\LaravelTelegramBot\Interfaces\CallbackInterface;
 
-abstract class Callback implements ExecutableCallback
+abstract class Callback implements CallbackInterface
 {
     /**
      * @var string
