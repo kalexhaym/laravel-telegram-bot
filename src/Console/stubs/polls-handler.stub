@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kalexhaym\LaravelTelegramBot\PollsHandler as BasePollsHandler;
+
+class {{ class }} extends BasePollsHandler
+{
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
+    public function execute(array $data): void
+    {
+
+    }
+}

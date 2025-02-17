@@ -2,10 +2,10 @@
 
 namespace {{ namespace }};
 
-use Kalexhaym\LaravelTelegramBot\DefaultTextHandler;
+use Kalexhaym\LaravelTelegramBot\TextHandler as BaseTextHandler;
 use Kalexhaym\LaravelTelegramBot\Message;
 
-class {{ class }} extends DefaultTextHandler
+class {{ class }} extends BaseTextHandler
 {
     /**
      * @param Message $message

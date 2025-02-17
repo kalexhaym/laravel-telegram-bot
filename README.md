@@ -19,7 +19,11 @@
 
 # Make Text Handler
 
-    php artisan make:telegram-text-handler
+    php artisan make:telegram-text-handler Text
+
+# Make Polls Handler
+
+    php artisan make:telegram-polls-handler Polls
 
 # Setup
 

@@ -3,6 +3,7 @@
 namespace Kalexhaym\LaravelTelegramBot;
 
 use Illuminate\Support\ServiceProvider;
+use Kalexhaym\LaravelTelegramBot\Console\PollsHandlerMakeCommand;
 use Kalexhaym\LaravelTelegramBot\Console\PollUpdates;
 use Kalexhaym\LaravelTelegramBot\Console\SetHook;
 use Kalexhaym\LaravelTelegramBot\Console\TelegramCallbackMakeCommand;
@@ -69,6 +70,7 @@ class TelegramServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 TextHandlerMakeCommand::class,
+                PollsHandlerMakeCommand::class,
                 TelegramCommandMakeCommand::class,
                 TelegramCallbackMakeCommand::class,
                 SetHook::class,
