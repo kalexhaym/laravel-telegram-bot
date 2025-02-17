@@ -114,9 +114,9 @@ class Telegram
     }
 
     /**
-     * @return PollsHandler
-     *@throws PollsHandlerException
+     * @throws PollsHandlerException
      *
+     * @return PollsHandler
      */
     private function loadPollsHandler(): PollsHandler
     {
