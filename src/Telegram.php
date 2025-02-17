@@ -180,7 +180,13 @@ class Telegram
             'timeout' => config('telegram.poll.timeout', 50),
         ];
 
-        $result = $this->post($method, $data, null, [], config('telegram.poll.timeout', 50) + 5);
+        $result = $this->post(
+            $method,
+            $data,
+            null,
+            [],
+            config('telegram.poll.timeout', 50) + config('telegram.poll.gap', 15)
+        );
 
         if (! empty($result['data']['result'])) {
             Cache::put($cache_key, last($result['data']['result'])['update_id']);

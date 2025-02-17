@@ -62,6 +62,7 @@ return [
         'sleep'   => env('TELEGRAM_POLL_SLEEP', 2),
         'limit'   => env('TELEGRAM_POLL_LIMIT', 100),
         'timeout' => env('TELEGRAM_POLL_TIMEOUT', 50),
+        'gap'     => env('TELEGRAM_POLL_GAP', 15),
     ],
 
     /*
