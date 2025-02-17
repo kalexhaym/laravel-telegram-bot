@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\PollsHandlerException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
 use Kalexhaym\LaravelTelegramBot\Traits\Requests;
 
@@ -31,6 +32,11 @@ class Telegram
     private TextHandler $text_handler;
 
     /**
+     * @var PollsHandler
+     */
+    private PollsHandler $polls_handler;
+
+    /**
      * Telegram constructor.
      *
      * @throws Exception
@@ -40,6 +46,7 @@ class Telegram
         $this->commands_list = $this->loadCommands();
         $this->callbacks_list = $this->loadCallbacks();
         $this->text_handler = $this->loadTextHandler();
+        $this->polls_handler = $this->loadPollsHandler();
     }
 
     /**
@@ -104,6 +111,26 @@ class Telegram
         }
 
         return new DefaultTextHandler();
+    }
+
+    /**
+     * @return PollsHandler
+     *@throws PollsHandlerException
+     *
+     */
+    private function loadPollsHandler(): PollsHandler
+    {
+        $class_name = config('telegram.polls-handler');
+        if (! empty($class_name)) {
+            $polls_handler = new $class_name();
+            if (! $polls_handler instanceof PollsHandler) {
+                throw new PollsHandlerException($class_name.' is not a valid polls handler');
+            }
+
+            return $polls_handler;
+        }
+
+        return new DefaultPollsHandler();
     }
 
     /**
@@ -227,6 +254,10 @@ class Telegram
             } else {
                 $this->text_handler->execute($message);
             }
+        }
+
+        if (! empty($update['poll_answer'])) {
+            $this->polls_handler->execute($update['poll_answer']);
         }
     }
 }
