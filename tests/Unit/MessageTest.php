@@ -745,18 +745,6 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageText' => Http::response(['success' => true], 200),
         ]);
 
-        $class = new Message(1);
-        $class->setData([
-            'chat' => [
-                'id' => 1,
-            ],
-            'message_id'   => 1,
-            'reply_markup' => ['markup'],
-        ]);
-
-        $this->expectException(Exception::class);
-        $class->editMessageText('Test Text');
-
         $class = new Message(1, 1);
         $class->setData([
             'chat' => [
@@ -781,16 +769,6 @@ class MessageTest extends TestCase
                     'reply_markup' => json_encode(['markup']),
                 ];
         });
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function testEditMessageReplyMarkup(): void
-    {
-        Http::fake([
-            $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
-        ]);
 
         $class = new Message(1);
         $class->setData([
@@ -802,7 +780,17 @@ class MessageTest extends TestCase
         ]);
 
         $this->expectException(Exception::class);
-        $class->editMessageReplyMarkup(['markup']);
+        $class->editMessageText('Test Text');
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testEditMessageReplyMarkup(): void
+    {
+        Http::fake([
+            $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
+        ]);
 
         $class = new Message(1, 1);
         $class->setData([
@@ -826,16 +814,6 @@ class MessageTest extends TestCase
                     'reply_markup' => json_encode(['markup']),
                 ];
         });
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function testEditMessageKeyboard(): void
-    {
-        Http::fake([
-            $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
-        ]);
 
         $class = new Message(1);
         $class->setData([
@@ -847,7 +825,17 @@ class MessageTest extends TestCase
         ]);
 
         $this->expectException(Exception::class);
-        $class->editMessageKeyboard(new Keyboard());
+        $class->editMessageReplyMarkup(['markup']);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testEditMessageKeyboard(): void
+    {
+        Http::fake([
+            $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
+        ]);
 
         $class = new Message(1, 1);
         $class->setData([
@@ -871,16 +859,6 @@ class MessageTest extends TestCase
                     'reply_markup' => json_encode(['keyboard' => []]),
                 ];
         });
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function testDeleteMessage(): void
-    {
-        Http::fake([
-            $this->testUrl.'/deleteMessage' => Http::response(['success' => true], 200),
-        ]);
 
         $class = new Message(1);
         $class->setData([
@@ -892,7 +870,17 @@ class MessageTest extends TestCase
         ]);
 
         $this->expectException(Exception::class);
-        $class->deleteMessage();
+        $class->editMessageKeyboard(new Keyboard());
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function testDeleteMessage(): void
+    {
+        Http::fake([
+            $this->testUrl.'/deleteMessage' => Http::response(['success' => true], 200),
+        ]);
 
         $class = new Message(1, 1);
         $class->setData([
@@ -915,5 +903,17 @@ class MessageTest extends TestCase
                     'message_id' => 1,
                 ];
         });
+
+        $class = new Message(1);
+        $class->setData([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id'   => 1,
+            'reply_markup' => ['markup'],
+        ]);
+
+        $this->expectException(Exception::class);
+        $class->deleteMessage();
     }
 }
