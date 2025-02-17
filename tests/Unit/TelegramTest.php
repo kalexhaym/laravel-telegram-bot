@@ -280,6 +280,9 @@ class TelegramTest extends TestCase
                 ],
                 'text' => 'test',
             ],
+            'poll_answer' => [
+                'poll_id' => 1,
+            ],
         ]]);
         $this->assertTrue(true);
 
@@ -316,6 +319,9 @@ class TelegramTest extends TestCase
                     ],
                 ],
                 'text' => 'test-command',
+            ],
+            'poll_answer' => [
+                'poll_id' => 1,
             ],
         ]]);
         $this->assertTrue(true);
