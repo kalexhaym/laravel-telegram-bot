@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kalexhaym\LaravelTelegramBot\Tests\Unit;
 
+use Exception;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -744,6 +745,18 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageText' => Http::response(['success' => true], 200),
         ]);
 
+        $class = new Message(1);
+        $class->setData([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id'   => 1,
+            'reply_markup' => ['markup'],
+        ]);
+
+        $this->expectException(Exception::class);
+        $class->editMessageText('Test Text');
+
         $class = new Message(1, 1);
         $class->setData([
             'chat' => [
@@ -779,6 +792,18 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
         ]);
 
+        $class = new Message(1);
+        $class->setData([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id'   => 1,
+            'reply_markup' => ['markup'],
+        ]);
+
+        $this->expectException(Exception::class);
+        $class->editMessageReplyMarkup(['markup']);
+
         $class = new Message(1, 1);
         $class->setData([
             'chat' => [
@@ -812,6 +837,18 @@ class MessageTest extends TestCase
             $this->testUrl.'/editMessageReplyMarkup' => Http::response(['success' => true], 200),
         ]);
 
+        $class = new Message(1);
+        $class->setData([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id'   => 1,
+            'reply_markup' => ['markup'],
+        ]);
+
+        $this->expectException(Exception::class);
+        $class->editMessageKeyboard(new Keyboard());
+
         $class = new Message(1, 1);
         $class->setData([
             'chat' => [
@@ -844,6 +881,18 @@ class MessageTest extends TestCase
         Http::fake([
             $this->testUrl.'/deleteMessage' => Http::response(['success' => true], 200),
         ]);
+
+        $class = new Message(1);
+        $class->setData([
+            'chat' => [
+                'id' => 1,
+            ],
+            'message_id'   => 1,
+            'reply_markup' => ['markup'],
+        ]);
+
+        $this->expectException(Exception::class);
+        $class->deleteMessage();
 
         $class = new Message(1, 1);
         $class->setData([
