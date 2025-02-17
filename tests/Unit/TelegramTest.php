@@ -12,8 +12,10 @@ use Kalexhaym\LaravelTelegramBot\Callback;
 use Kalexhaym\LaravelTelegramBot\Command;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CallbackException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\CommandException;
+use Kalexhaym\LaravelTelegramBot\Exceptions\PollsHandlerException;
 use Kalexhaym\LaravelTelegramBot\Exceptions\TextHandlerException;
 use Kalexhaym\LaravelTelegramBot\Message;
+use Kalexhaym\LaravelTelegramBot\PollsHandler;
 use Kalexhaym\LaravelTelegramBot\Telegram;
 use Kalexhaym\LaravelTelegramBot\TextHandler;
 use Orchestra\Testbench\TestCase;
@@ -125,6 +127,29 @@ class TelegramTest extends TestCase
 
         $this->app['config']->set('telegram.text-handler', TestCommand::class);
         $this->expectException(TextHandlerException::class);
+        $method->invokeArgs($class, []);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testLoadPollsHandler(): void
+    {
+        $this->app['config']->set('telegram.commands', []);
+        $this->app['config']->set('telegram.callbacks', []);
+
+        $method = self::getMethod('loadPollsHandler');
+
+        $class = new Telegram();
+        $result = $method->invokeArgs($class, []);
+        $this->assertInstanceOf(PollsHandler::class, $result);
+
+        $this->app['config']->set('telegram.polls-handler', TestPollsHandler::class);
+        $result = $method->invokeArgs($class, []);
+        $this->assertInstanceOf(PollsHandler::class, $result);
+
+        $this->app['config']->set('telegram.polls-handler', TestCommand::class);
+        $this->expectException(PollsHandlerException::class);
         $method->invokeArgs($class, []);
     }
 
@@ -347,4 +372,14 @@ class TestTextHandler extends TextHandler
      * @return void
      */
     public function execute(Message $message): void {}
+}
+
+class TestPollsHandler extends PollsHandler
+{
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
+    public function execute(array $data): void {}
 }
