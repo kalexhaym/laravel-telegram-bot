@@ -130,19 +130,24 @@ class Message
     /**
      * Use this method to send text messages. On success, the sent Message is returned.
      *
-     * @param string $message
+     * @param string      $message
+     * @param string|null $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendMessage(string $message): array
+    public function sendMessage(string $message, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'text'                 => $message,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -156,18 +161,23 @@ class Message
      *
      * @param string|Photo $photo
      * @param string|null  $caption
+     * @param string|null  $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendPhoto(string|Photo $photo, ?string $caption = null): array
+    public function sendPhoto(string|Photo $photo, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -189,18 +199,23 @@ class Message
      *
      * @param string|Audio $audio
      * @param string|null  $caption
+     * @param string|null  $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendAudio(string|Audio $audio, ?string $caption = null): array
+    public function sendAudio(string|Audio $audio, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -220,18 +235,23 @@ class Message
      *
      * @param string|Document $document
      * @param string|null     $caption
+     * @param string|null     $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendDocument(string|Document $document, ?string $caption = null): array
+    public function sendDocument(string|Document $document, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -251,18 +271,23 @@ class Message
      *
      * @param string|Video $video
      * @param string|null  $caption
+     * @param string|null  $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendVideo(string|Video $video, ?string $caption = null): array
+    public function sendVideo(string|Video $video, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -282,18 +307,23 @@ class Message
      *
      * @param string|Animation $animation
      * @param string|null      $caption
+     * @param string|null      $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendAnimation(string|Animation $animation, ?string $caption = null): array
+    public function sendAnimation(string|Animation $animation, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -313,18 +343,23 @@ class Message
      *
      * @param string|Voice $voice
      * @param string|null  $caption
+     * @param string|null  $parse_mode
      *
      * @throws ConnectionException
      *
      * @return array
      */
-    public function sendVoice(string|Voice $voice, ?string $caption = null): array
+    public function sendVoice(string|Voice $voice, ?string $caption = null, ?string $parse_mode = null): array
     {
         $data = [
             'chat_id'              => config('telegram.debug.chat_id') ?? $this->chat_id,
             'caption'              => $caption,
             'disable_notification' => $this->disable_notification,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->keyboard)) {
             $data['reply_markup'] = json_encode($this->keyboard);
@@ -487,14 +522,15 @@ class Message
     /**
      * Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned. Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
      *
-     * @param string $text
+     * @param string      $text
+     * @param string|null $parse_mode
      *
      * @throws Exception
      * @throws ConnectionException
      *
      * @return array
      */
-    public function editMessageText(string $text): array
+    public function editMessageText(string $text, ?string $parse_mode = null): array
     {
         if (empty($this->message_id)) {
             throw new Exception('You need to specify the message ID in the Message parameters to edit it.');
@@ -505,6 +541,10 @@ class Message
             'message_id' => $this->message_id,
             'text'       => $text,
         ];
+
+        if (! empty($parse_mode)) {
+            $data['parse_mode'] = $parse_mode;
+        }
 
         if (! empty($this->reply_markup)) {
             $data['reply_markup'] = json_encode($this->reply_markup);
